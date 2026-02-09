@@ -734,16 +734,18 @@
     }else if(section==="keyboards"){
       buildKeyboardTab();
       buildExtModulesTab();
+      
       // Показуємо вкладку "Модулі" тільки якщо прилад підтримує розширювачі
       tabKbBtn.style.display = "inline-flex";
-    if (DEVICE_CONFIG.supportsExtenders) {
-      tabModsBtn.style.display = "inline-flex";      // ✅ Показуємо для L(LTE), L, M
-      modalTitle.textContent = "Клавіатури та розширювачі";
-    } else {
-      tabKbBtn.style.display = "none";             // ✅ Приховуємо для інших
-      tabModsBtn.style.display = "none";             // ✅ Приховуємо для інших
-      modalTitle.textContent = "Клавіатури";
-    }
+      if (DEVICE_CONFIG.supportsExtenders) {
+        tabModsBtn.style.display = "inline-flex";
+        modalTitle.textContent = "Клавіатури та розширювачі";
+      } else {
+        tabKbBtn.style.display = "none";
+        tabModsBtn.style.display = "none";
+        modalTitle.textContent = "Клавіатури";
+      }
+      
       tabKbBtn.classList.add("active");
       tabKbBody.classList.add("active");
     }else if(section === "ext-power"){
@@ -929,8 +931,10 @@
       }
 
       if(r.fixed || isUniqueMod){
+        tdQty.className = "qty";
         tdQty.textContent = r.qty;
       }else{
+        tdQty.className = "qty";
         const inp = document.createElement("input");
         inp.type = "number";
         inp.min  = "1";
@@ -1115,8 +1119,8 @@
         <div class="row">
           <label>Коефіцієнт запасу:</label>
           <select class="ext-reserve">
-            <option value="1" selected>Без запасу</option>
-            <option value="1.25">З запасом 25%</option>
+            <option value="1">Без запасу</option>
+            <option value="1.25" selected>З запасом 25%</option>
           </select>
         </div>
         <div class="row">
@@ -1274,9 +1278,426 @@
     updateSlotUI();
     attachEvents();
     updateMzHotspotState();
+    attachPdfExport();
   }
 
   document.addEventListener("DOMContentLoaded", init);
+
+  // ========== PDF EXPORT FUNCTIONALITY ==========
+
+  function generatePDF() {
+    // Перевірка чи є дані для експорту
+    //if (cart.size <= 1) { // Тільки базовий прилад
+    //  alert('Додайте компоненти для розрахунку перед експортом в PDF');
+    //  return;
+    //}
+
+    // Створюємо вікно для друку з красивим форматуванням
+    const printWindow = window.open('', '_blank');
+
+    const deviceName = DATA.base.device;
+    const currentDate = new Date().toLocaleDateString('uk-UA', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+
+    // Збираємо дані з таблиці
+    let tableRows = '';
+    const order = ["Прилад","Модуль","Модуль (корпус)","Клавіатура","Датчик","Сирена"];
+    const arr = Array.from(cart.values()).sort((a,b)=>{
+      const ai = order.indexOf(a.type);
+      const bi = order.indexOf(b.type);
+      if(ai!==bi) return ai-bi;
+      return a.name.localeCompare(b.name,"uk");
+    });
+
+    arr.forEach(item => {
+      tableRows += `
+        <tr>
+          <td>${item.type}</td>
+          <td>${item.name}</td>
+          <td>${item.normal}</td>
+          <td>${item.alarm}</td>
+          <td style="text-align: center;">${item.qty}</td>
+          <td>${Math.round(item.normal * item.qty)}</td>
+          <td>${Math.round(item.alarm * item.qty)}</td>
+        </tr>
+      `;
+    });
+
+    // Отримуємо підсумкові значення
+    const sumNorm = sumNormEl.textContent;
+    const sumAlarm = sumAlarmEl.textContent;
+    const hours = hoursEl.value;
+    const reserve = parseFloat(reserveEl.value);
+    const reserveText = reserve === 1.25 ? 'З запасом 25%' : 'Без запасу';
+    const capacity = capEl.textContent;
+
+    // Собираем секции для розширювачів (extDevices)
+    let extSections = '';
+    if (extDevices && extDevices.size > 0) {
+      extDevices.forEach((dev) => {
+        const devName = dev.name || 'Розширювач';
+        let devRowsHtml = '';
+        let devSumNorm = 0;
+        let devSumAlarm = 0;
+        dev.rows.forEach(r => {
+          devRowsHtml += `
+            <tr>
+              <td>${r.type}</td>
+              <td>${r.name}</td>
+              <td>${r.normal}</td>
+              <td>${r.alarm}</td>
+              <td style="text-align: center;">${r.qty}</td>
+              <td>${Math.round(r.normal * r.qty)}</td>
+              <td>${Math.round(r.alarm * r.qty)}</td>
+            </tr>`;
+          devSumNorm += (r.normal || 0) * (r.qty || 0);
+          devSumAlarm += (r.alarm || 0) * (r.qty || 0);
+        });
+
+        // Час і запас для розширювача (беремо з DOM якщо є)
+        const hoursExt = (dev.dom && dev.dom.hoursEl) ? dev.dom.hoursEl.value : '';
+        const reserveExt = (dev.dom && dev.dom.reserveEl) ? parseFloat(dev.dom.reserveEl.value) : 1.25;
+        const reserveTextExt = reserveExt === 1.25 ? 'З запасом 25%' : 'Без запасу';
+        const capExt = (devSumNorm > 0 && parseFloat(hoursExt) > 0) ? ((devSumNorm * parseFloat(hoursExt) / 1000) * reserveExt).toFixed(2) : '—';
+
+        extSections += `
+  <div class="section">
+    <div class="section-title">${devName}</div>
+    <table>
+      <thead>
+        <tr>
+          <th>Тип</th>
+          <th>Назва</th>
+          <th>Норма (мА)</th>
+          <th>Тривога (мА)</th>
+          <th style="text-align: center;">Кількість</th>
+          <th>Σ Норма (мА)</th>
+          <th>Σ Тривога (мА)</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${devRowsHtml}
+      </tbody>
+    </table>
+    <div class="summary-box">
+      <div class="summary-row">
+        <span class="summary-label">Сумарне споживання в нормі:</span>
+        <span class="summary-value">${Math.round(devSumNorm)} мА</span>
+      </div>
+      <div class="summary-row">
+        <span class="summary-label">Сумарне споживання в тривозі:</span>
+        <span class="summary-value">${Math.round(devSumAlarm)} мА</span>
+      </div>
+      <div class="summary-row">
+        <span class="summary-label">Час роботи від АКБ:</span>
+        <span class="summary-value">${hoursExt || '—'} год</span>
+      </div>
+      <div class="summary-row">
+        <span class="summary-label">Коефіцієнт запасу:</span>
+        <span class="summary-value">${reserveTextExt}</span>
+      </div>
+      <div class="summary-row">
+        <span class="summary-label result-highlight">Рекомендована ємність АКБ:</span>
+        <span class="summary-value result-highlight">${capExt} А·год</span>
+      </div>
+    </div>
+  </div>`;
+      });
+    }
+
+    const html = `
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Розрахунок АКБ - ${deviceName}</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+      padding: 40px;
+      background: white;
+      color: #000;
+    }
+    
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 30px;
+      padding-bottom: 20px;
+      border-bottom: 3px solid #00ff66;
+    }
+    
+    .logo-section {
+      flex: 1;
+    }
+    
+    .logo {
+      width: 150px;
+      height: auto;
+      margin-bottom: 10px;
+    }
+    
+    .company-info {
+      font-size: 12px;
+      color: #666;
+      line-height: 1.6;
+    }
+    
+    .doc-info {
+      text-align: right;
+    }
+    
+    .doc-title {
+      font-size: 24px;
+      font-weight: 700;
+      color: #000;
+      margin-bottom: 8px;
+    }
+    
+    .doc-subtitle {
+      font-size: 18px;
+      color: #00c853;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+    
+    .doc-date {
+      font-size: 12px;
+      color: #666;
+    }
+    
+    .section {
+      margin-bottom: 30px;
+    }
+    
+    .section-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: #000;
+      margin-bottom: 15px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid #e0e0e0;
+    }
+    .device-model{
+      font-size:13px;
+      color:#222;
+      margin-bottom:10px;
+      font-weight:600;
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+      font-size: 13px;
+    }
+    
+    th {
+      background: #f5f5f5;
+      padding: 12px 8px;
+      text-align: center;
+      font-weight: 600;
+      border: 1px solid #ddd;
+      color: #000;
+    }
+    th:nth-child(1), th:nth-child(2) {
+      text-align: left;
+    }
+    
+    td {
+      padding: 10px 8px;
+      border: 1px solid #ddd;
+      text-align: center;
+    }
+    td:nth-child(1), td:nth-child(2) {
+      text-align: left;
+    }
+    
+    tr:nth-child(even) {
+      background: #fafafa;
+    }
+    
+    .summary-box {
+      background: linear-gradient(135deg, #f0fff4, #e6ffe6);
+      border: 2px solid #00ff66;
+      border-radius: 8px;
+      padding: 20px;
+      margin-top: 20px;
+    }
+    
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px solid #d0d0d0;
+    }
+    
+    .summary-row:last-child {
+      border-bottom: none;
+      margin-top: 10px;
+      padding-top: 15px;
+      border-top: 2px solid #00c853;
+    }
+    
+    .summary-label {
+      font-weight: 600;
+      color: #000;
+    }
+    
+    .summary-value {
+      font-weight: 700;
+      color: #00c853;
+    }
+    
+    .result-highlight {
+      font-size: 20px;
+    }
+    
+    .footer {
+      margin-top: 50px;
+      padding-top: 20px;
+      border-top: 2px solid #e0e0e0;
+      text-align: center;
+      font-size: 11px;
+      color: #999;
+    }
+    
+    @media print {
+      body {
+        padding: 20px;
+      }
+      
+      .no-print {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="logo-section">
+      <img class="logo" src="../assets/images/tiras-full.svg" alt="TIRAS">
+      <div class="company-info">
+        ТОВ "ТІРАС-12"<br>
+        Системи безпеки та охорони<br>
+        www.tiras.technology
+      </div>
+    </div>
+    <div class="doc-info">
+      <div class="doc-title">Розрахунок АКБ</div>
+      <div class="doc-subtitle">${deviceName}</div>
+      <div class="doc-date">Дата: ${currentDate}</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">${deviceName}</div>
+    <table>
+      <thead>
+        <tr>
+          <th>Тип</th>
+          <th>Назва</th>
+          <th>Норма (мА)</th>
+          <th>Тривога (мА)</th>
+          <th style="text-align: center;">Кількість</th>
+          <th>Σ Норма (мА)</th>
+          <th>Σ Тривога (мА)</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${tableRows}
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Підсумковий розрахунок</div>
+    <div class="summary-box">
+      <div class="summary-row">
+        <span class="summary-label">Сумарне споживання в нормі:</span>
+        <span class="summary-value">${sumNorm} мА</span>
+      </div>
+      <div class="summary-row">
+        <span class="summary-label">Сумарне споживання в тривозі:</span>
+        <span class="summary-value">${sumAlarm} мА</span>
+      </div>
+      <div class="summary-row">
+        <span class="summary-label">Час роботи від АКБ:</span>
+        <span class="summary-value">${hours} год</span>
+      </div>
+      <div class="summary-row">
+        <span class="summary-label">Коефіцієнт запасу:</span>
+        <span class="summary-value">${reserveText}</span>
+      </div>
+      <div class="summary-row">
+        <span class="summary-label result-highlight">Рекомендована ємність АКБ:</span>
+        <span class="summary-value result-highlight">${capacity} А·год</span>
+      </div>
+    </div>
+  </div>
+
+  ${extSections}
+
+  <div class="footer">
+    Розрахунок виконано за допомогою калькулятора TIRAS | ${currentDate}<br>
+    Цей документ згенеровано автоматично і має інформаційний характер
+  </div>
+
+  <div class="no-print" style="margin-top: 30px; text-align: center;">
+    <button onclick="window.print()" style="
+      background: linear-gradient(135deg, #00c853, #00ff66);
+      color: #000;
+      border: none;
+      padding: 12px 30px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      border-radius: 8px;
+      margin-right: 10px;
+    ">🖨️ Друкувати</button>
+    <button onclick="window.close()" style="
+      background: #f0f0f0;
+      color: #000;
+      border: 1px solid #ccc;
+      padding: 12px 30px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      border-radius: 8px;
+    ">Закрити</button>
+  </div>
+</body>
+</html>
+    `;
+    
+
+    printWindow.document.write(html);
+    printWindow.document.close();
+
+    // Автоматично відкриваємо діалог друку через секунду
+    setTimeout(() => {
+      printWindow.focus();
+    }, 500);
+  }
+
+  // Додаємо обробник для кнопки експорту (буде підключено в init)
+  function attachPdfExport() {
+    const exportBtn = document.getElementById('exportPdf');
+    if (exportBtn) {
+      exportBtn.addEventListener('click', generatePDF);
+    }
+  }
 
 })();
 
