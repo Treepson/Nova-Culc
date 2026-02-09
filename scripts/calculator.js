@@ -1119,8 +1119,8 @@
         <div class="row">
           <label>Коефіцієнт запасу:</label>
           <select class="ext-reserve">
-            <option value="1">Без запасу</option>
-            <option value="1.25" selected>З запасом 25%</option>
+            <option value="1" selected>Без запасу</option>
+            <option value="1.25">З запасом 25%</option>
           </select>
         </div>
         <div class="row">
