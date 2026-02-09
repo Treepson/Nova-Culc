@@ -1,0 +1,120 @@
+{
+  "modulesInner": [
+    { "name": "M-OUT2R", "img": "assets/modules/M-OUT2R.png", "normal": 40, "alarm": 40 },
+    { "name": "M-X", "img": "assets/modules/M-X.png", "normal": 25, "alarm": 25 },
+    { "name": "M-WiFi", "img": "assets/modules/M-WiFi.png", "normal": 50, "alarm": 50 },
+    { "name": "M-NET+", "img": "assets/modules/M-NET+.png", "normal": 80, "alarm": 80 },
+    { "name": "M-Z+", "img": "assets/modules/M-Z+.png", "normal": 20, "alarm": 20 }
+  ],
+  
+  "mzModule": { "name": "M-Z", "img": "assets/modules/M-Z.png", "normal": 60, "alarm": 60 },
+
+  "keyboardGroups": {
+    "K-LED": {
+      "img": "assets/kb/K-LED.png",
+      "models": [
+        { "name": "K-LED4", "normal": 40, "alarm": 40 },
+        { "name": "K-LED8", "normal": 40, "alarm": 40 },
+        { "name": "K-LED16", "normal": 40, "alarm": 40 }
+      ]
+    },
+    "K-PAD": {
+      "img": "assets/kb/K-Pad.png",
+      "models": [
+        { "name": "K-PAD4", "normal": 30, "alarm": 30 },
+        { "name": "K-PAD4+", "normal": 30, "alarm": 30 },
+        { "name": "K-PAD8", "normal": 55, "alarm": 55 },
+        { "name": "K-PAD8+", "normal": 55, "alarm": 55 },
+        { "name": "K-PAD16", "normal": 55, "alarm": 55 },
+        { "name": "K-PAD16+", "normal": 55, "alarm": 55 },
+        { "name": "K-PAD OLED", "normal": 120, "alarm": 120 },
+        { "name": "K-PAD OLED+", "normal": 120, "alarm": 120 }
+      ]
+    },
+    "K-GLCD": {
+      "img": "assets/kb/K-GLCD.png",
+      "models": [
+        { "name": "K-GLCD", "normal": 220, "alarm": 220 },
+        { "name": "K-GLCD+", "normal": 220, "alarm": 220 }
+      ]
+    },
+    "K-LCD": {
+      "img": "assets/kb/K-LCD.webp",
+      "models": [
+        { "name": "K-LCD", "normal": 60, "alarm": 60 }
+      ]
+    }
+  },
+  
+  "modulesExt": {
+    "Розширювачі зон": [
+      { "name": "M-Z box", "img": "assets/modules/M-Z box.png", "normal": 60, "alarm": 60 },
+      { "name": "M-ZP box", "img": "assets/modules/M-ZPBox.png", "normal": 200, "alarm": 200 },
+      { "name": "M-ZP sBox", "img": "assets/modules/M-ZP sBox.png", "normal": 150, "alarm": 150 },
+      { "name": "M-ZP mBox", "img": "assets/modules/M-ZP mBox.png", "normal": 200, "alarm": 200 }
+    ],
+    "Розширювачі виходів": [
+      { "name": "M-OUT2R box", "img": "assets/modules/M-OUT2R box.png", "normal": 40, "alarm": 40 },
+      { "name": "M-OUT8R", "img": "assets/modules/M-OUT8R.png", "normal": 25, "alarm": 360 }
+    ],
+    "Панелі індикації": [
+      { "name": "P-IND32", "img": "assets/modules/P-IND32.png", "normal": 80, "alarm": 80 }
+    ]
+  },
+  
+  "sensors": [
+    { "name": "Swan Quad", "img": "assets/sensors/swanquad.png", "normal": 8, "alarm": 10 },
+    { "name": "Swan PGB", "img": "assets/sensors/swanpgb.png", "normal": 16, "alarm": 22 },
+    { "name": "GBD II", "img": "assets/sensors/gbd 2.png", "normal": 22, "alarm": 26 },
+    { "name": "SRPG II", "img": "assets/sensors/srpg 2.png", "normal": 16, "alarm": 22 },
+    { "name": "SRP 600", "img": "assets/sensors/srp600.png", "normal": 8, "alarm": 8 },
+    { "name": "GSN Patrol 803", "img": "assets/sensors/patrol 803.png", "normal": 17, "alarm": 19 },
+    { "name": "LC-100", "img": "assets/sensors/LC 100.png", "normal": 8, "alarm": 10 },
+    { "name": "LC-102", "img": "assets/sensors/LC 102.png", "normal": 16, "alarm": 18 },
+    { "name": "Detecto SMK10", "img": "assets/sensors/SMK 10.webp", "normal": 0.11, "alarm": 16 },
+    { "name": "Detecto HT10", "img": "assets/sensors/HT 10.webp", "normal": 0.10, "alarm": 16 },
+    { "name": "Detecto MLT10", "img": "assets/sensors/MLT 10.png", "normal": 0.12, "alarm": 16 }
+  ],
+  
+  "sirens": [
+    { "name": "Джміль", "img": "assets/sirens/dzhmil.png", "normal": 0, "alarm": 100 },
+    { "name": "Джміль-1", "img": "assets/sirens/dzhmil-1.png", "normal": 0, "alarm": 100 },
+    { "name": "Джміль-2", "img": "assets/sirens/dzhmil-1.png", "normal": 0, "alarm": 300 }
+  ],
+  
+  "extHotspots": {
+    "M-ZP box": {
+      "sens": { "left": 40.9, "top": 30.0 },
+      "sens2": { "left": 51.4, "top": 17.4 },
+      "modx": { "left": -100, "top": -100 },
+      "power": { "left": 74.2, "top": 42.3 },
+      "sir": { "left": 69.0, "top": 42.3 }
+    },
+    "M-ZP sBox": {
+      "sens": { "left": 51.3, "top": 39.7 },
+      "modx": { "left": 78.1, "top": 11.5 },
+      "power": { "left": 74.5, "top": 39.7 },
+      "sir": { "left": 84.0, "top": 39.7 }
+    },
+    "M-ZP mBox": {
+      "sens": { "left": 46.3, "top": 20.9 },
+      "modx": { "left": 65.2, "top": 13.2 },
+      "power": { "left": 55.1, "top": 34.7 },
+      "sir": { "left": 65.8, "top": 34.7 },
+      "sens2": { "left": 56.3, "top": 15.9 }
+    }
+  },
+  
+  "slotLimits": {
+    "M-OUT2R": 2,
+    "M-Z+": 2,
+    "M-X": 1,
+    "M-WiFi": 1,
+    "M-NET+": 1
+  },
+  
+  "moduleConflicts": {
+    "M-WiFi": ["M-NET+"],
+    "M-NET+": ["M-WiFi"]
+  }
+}

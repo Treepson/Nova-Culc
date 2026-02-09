@@ -1,0 +1,165 @@
+{
+  "devices": [
+    {
+      "id": "nova-l-lte",
+      "name": "Orion NOVA L (LTE)",
+      "title": "Калькулятор ємності АКБ • Orion NOVA L (LTE)",
+      "backLink": "../index.html",
+      "boardImage": "assets/boards/nova-l-lte.png",
+      "hotspots": {
+        "mod1": { "left": "31.7%", "top": "14.9%" },
+        "mod2": { "left": "41.2%", "top": "14.9%" },
+        "kb": { "left": "49.9%", "top": "34.2%" },
+        "sens": { "left": "30.7%", "top": "34.2%" },
+        "sir": { "left": "24%", "top": "20.8%" }
+      },
+      "baseDevice": {
+        "name": "Orion NOVA L (LTE)",
+        "normal": 140,
+        "alarm": 140
+      },
+      "hasModSlot2": true,
+      "supportsExtenders": true,
+      "hasMzSlot": false,
+      "excludeModules": ["M-NET+"]      
+    },
+    {
+      "id": "nova-m-lte",
+      "name": "Orion NOVA M (LTE)",
+      "title": "Калькулятор ємності АКБ • Orion NOVA M (LTE)",
+      "backLink": "../index.html",
+      "boardImage": "assets/boards/nova-m-lte.png",
+      "hotspots": {
+        "mod1": { "left": "35.3%", "top": "14.9%" },
+        "mod2": { "left": "44.7%", "top": "14.9%" },
+        "kb": { "left": "60.5%", "top": "33.3%" },
+        "sens": { "left": "42.7%", "top": "33.3%" },
+        "sir": { "left": "64.7%", "top": "33.3%" }
+      },
+      "baseDevice": {
+        "name": "Orion NOVA M (LTE)",
+        "normal": 140,
+        "alarm": 140
+      },
+      "hasModSlot2": true,
+      "supportsExtenders": false,
+      "hasMzSlot": false,
+      "excludeModules": []
+    },
+    {
+      "id": "nova-s-lte",
+      "name": "Orion NOVA S (LTE)",
+      "title": "Калькулятор ємності АКБ • Orion NOVA S (LTE)",
+      "backLink": "../index.html",
+      "boardImage": "assets/boards/nova-s-lte.png",
+      "hotspots": {
+        "mod1": { "left": "47.7%", "top": "9.9%" },
+        "mod2": { "left": "65.5%", "top": "9.9%" },
+        "kb": { "left": "75.6%", "top": "42.3%" },
+        "sens": { "left": "60.7%", "top": "42.3%" },
+        "sir": { "left": "81.7%", "top": "42.3%" }
+      },
+      "baseDevice": {
+        "name": "Orion NOVA S (LTE)",
+        "normal": 140,
+        "alarm": 140
+      },
+      "hasModSlot2": true,
+      "supportsExtenders": false,
+      "hasMzSlot": false,
+      "excludeModules": []
+    },
+    {
+      "id": "nova-l",
+      "name": "Orion NOVA L",
+      "title": "Калькулятор ємності АКБ • Orion NOVA L",
+      "backLink": "../index.html",
+      "boardImage": "assets/boards/nova-l.png",
+      "hotspots": {
+        "mod1": { "left": "39.1%", "top": "11.9%" },
+        "mod2": { "left": "49.4%", "top": "11.9%" },
+        "kb": { "left": "51.9%", "top": "32.2%" },
+        "sens": { "left": "33.7%", "top": "32.2%" },
+        "sir": { "left": "67.1%", "top": "32.2%" }
+      },
+      "baseDevice": {
+        "name": "Orion NOVA L",
+        "normal": 140,
+        "alarm": 140
+      },
+      "hasModSlot2": true,
+      "supportsExtenders": true,
+      "hasMzSlot": false,
+      "excludeModules": []
+    },
+    {
+      "id": "nova-m",
+      "name": "Orion NOVA M",
+      "title": "Калькулятор ємності АКБ • Orion NOVA M",
+      "backLink": "../index.html",
+      "boardImage": "assets/boards/nova-m.png",
+      "hotspots": {
+        "mod1": { "left": "39.1%", "top": "11.9%" },
+        "mod2": { "left": "49.4%", "top": "11.9%" },
+        "kb": { "left": "51.9%", "top": "32.2%" },
+        "sens": { "left": "33.7%", "top": "32.2%" },
+        "sir": { "left": "67.1%", "top": "32.2%" },
+        "mz": { "left": "58.1%", "top": "11.9%" }
+      },
+      "baseDevice": {
+        "name": "Orion NOVA M",
+        "normal": 140,
+        "alarm": 140
+      },
+      "hasModSlot2": true,
+      "supportsExtenders": true,
+      "hasMzSlot": true,
+      "excludeModules": []
+    },
+    {
+      "id": "nova-s",
+      "name": "Orion NOVA S",
+      "title": "Калькулятор ємності АКБ • Orion NOVA S",
+      "backLink": "../index.html",
+      "boardImage": "assets/boards/nova-s.png",
+      "hotspots": {
+        "mod1": { "left": "49.7%", "top": "12.9%" },
+        "mod2": { "left": "65.5%", "top": "12.9%" },
+        "kb": { "left": "66.2%", "top": "41.3%" },
+        "sens": { "left": "74.7%", "top": "41.3%" },
+        "sir": { "left": "51.7%", "top": "41.3%" }
+      },
+      "baseDevice": {
+        "name": "Orion NOVA S",
+        "normal": 140,
+        "alarm": 140
+      },
+      "hasModSlot2": true,
+      "supportsExtenders": false,
+      "hasMzSlot": false,
+      "excludeModules": []
+    },
+    {
+      "id": "nova-xs",
+      "name": "Orion NOVA XS",
+      "title": "Калькулятор ємності АКБ • Orion NOVA XS",
+      "backLink": "../index.html",
+      "boardImage": "assets/boards/nova-xs.png",
+      "hotspots": {
+        "mod1": { "left": "65.5%", "top": "12.9%" },
+        "kb": { "left": "66.2%", "top": "41.3%" },
+        "sens": { "left": "74.7%", "top": "41.3%" },
+        "sir": { "left": "58%", "top": "41.3%" }
+      },
+      "baseDevice": {
+        "name": "Orion NOVA XS",
+        "normal": 140,
+        "alarm": 140
+      },
+      "hasModSlot2": false,
+      "supportsExtenders": false,
+      "hasMzSlot": false,
+      "excludeModules": []
+    }
+  ]
+}
