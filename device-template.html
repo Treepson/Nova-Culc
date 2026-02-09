@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title id="pageTitle">Калькулятор АКБ</title>
+  <link rel="stylesheet" href="../styles/calculator.css">
+</head>
+<body>
+  <header class="tiras-header">
+    <div class="tiras-top">
+      <a href="https://tiras.technology/">
+        <img src="../assets/images/tiras-logo.svg" alt="TIRAS" class="tiras-logo">
+      </a>
+    </div>
+    <div class="tiras-back">
+      <a href="#" id="backLink" class="tiras-back-link">
+        ← Повернутися до бази знань
+      </a>
+    </div>
+  </header>
+
+  <header class="top-header">
+    <h1 id="deviceTitle">Калькулятор ємності АКБ</h1>
+    <p class="subtitle">Натисніть на «+» на платі, щоб додати клавіатури, модулі, датчики або сирени.</p>
+  </header>
+
+  <div class="device-tabs">
+    <div id="deviceTabs" class="device-tabs-inner">
+      <div id="device-type-switch" data-visible="false">
+        <button class="dev-tab-btn active" data-device-tab="main">ППК</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="extPages" class="ext-pages" style="display:none;"></div>
+
+  <main class="stage">
+    <div class="board-wrap" id="boardWrap">
+      <img src="" class="board" alt="" id="boardImage">
+      <!-- Hotspots will be generated dynamically -->
+    </div>
+
+    <section class="table-wrap">
+      <div class="table-actions">
+        <button id="clearAll" class="btn">Очистити все</button>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Тип</th>
+            <th>Назва</th>
+            <th>Норма (мА)</th>
+            <th>Тривога (мА)</th>
+            <th>Кількість</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="rows"></tbody>
+      </table>
+    </section>
+
+    <section class="capacity">
+      <div class="row">
+        <label>Σ Споживання в нормі:</label>
+        <span><span id="sumNorm">—</span> мА</span>
+      </div>
+      <div class="row">
+        <label>Σ Споживання в тривозі:</label>
+        <span><span id="sumAlarm">—</span> мА</span>
+      </div>
+      <div class="row">
+        <label>Час роботи (год):</label>
+        <input type="number" id="hours" min="1" step="1" value="30">
+      </div>
+      <div class="row">
+        <label>Коефіцієнт запасу:</label>
+        <select id="reserve">
+          <option value="1">Без запасу</option>
+          <option value="1.25" selected>З запасом 25%</option>
+        </select>
+      </div>
+      <div class="row">
+        <label>Розрахункова ємність АКБ:</label>
+        <span><span id="capacity">—</span> А·год</span>
+      </div>
+    </section>
+  </main>
+
+  <div class="modal" id="modal">
+    <div class="sheet">
+      <button class="close-x" id="closeModal">×</button>
+      <h3 id="modalTitle">Додати</h3>
+
+      <div class="tab-header">
+        <button class="tab active" data-tab="kb">Клавіатури</button>
+        <button class="tab" data-tab="mods">Модулі</button>
+      </div>
+
+      <div id="tab-kb" class="tab-body active"></div>
+      <div id="tab-mods" class="tab-body"></div>
+      <div id="generic-body" class="tab-body"></div>
+    </div>
+  </div>
+
+  <script src="../scripts/calculator.js"></script>
+</body>
+</html>
