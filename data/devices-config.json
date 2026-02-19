@@ -27,7 +27,7 @@
       "id": "nova-m-lte",
       "name": "Orion NOVA M (LTE)",
       "title": "Калькулятор ємності АКБ • Orion NOVA M (LTE)",
-      "backLink": "../index.html",
+      "backLink": "https://tiras.technology/devices/orion-nova-m-lte/",
       "boardImage": "assets/boards/nova-m-lte.png",
       "hotspots": {
         "mod1": { "left": "35.3%", "top": "14.9%" },
@@ -50,7 +50,7 @@
       "id": "nova-s-lte",
       "name": "Orion NOVA S (LTE)",
       "title": "Калькулятор ємності АКБ • Orion NOVA S (LTE)",
-      "backLink": "../index.html",
+      "backLink": "https://tiras.technology/devices/orion-nova-s-lte/",
       "boardImage": "assets/boards/nova-s-lte.png",
       "hotspots": {
         "mod1": { "left": "47.7%", "top": "9.9%" },
@@ -73,7 +73,7 @@
       "id": "nova-l",
       "name": "Orion NOVA L",
       "title": "Калькулятор ємності АКБ • Orion NOVA L",
-      "backLink": "../index.html",
+      "backLink": "https://tiras.technology/devices/orion-nova-l/",
       "boardImage": "assets/boards/nova-l.png",
       "hotspots": {
         "mod1": { "left": "39.1%", "top": "11.9%" },
@@ -96,7 +96,7 @@
       "id": "nova-m",
       "name": "Orion NOVA M",
       "title": "Калькулятор ємності АКБ • Orion NOVA M",
-      "backLink": "../index.html",
+      "backLink": "https://tiras.technology/devices/orion-nova-m/",
       "boardImage": "assets/boards/nova-m.png",
       "hotspots": {
         "mod1": { "left": "39.1%", "top": "11.9%" },
@@ -120,7 +120,7 @@
       "id": "nova-s",
       "name": "Orion NOVA S",
       "title": "Калькулятор ємності АКБ • Orion NOVA S",
-      "backLink": "../index.html",
+      "backLink": "https://tiras.technology/devices/orion-nova-s/",
       "boardImage": "assets/boards/nova-s.png",
       "hotspots": {
         "mod1": { "left": "49.7%", "top": "12.9%" },
@@ -143,7 +143,7 @@
       "id": "nova-xs",
       "name": "Orion NOVA XS",
       "title": "Калькулятор ємності АКБ • Orion NOVA XS",
-      "backLink": "../index.html",
+      "backLink": "https://tiras.technology/devices/orion-nova-xs/",
       "boardImage": "assets/boards/nova-xs.png",
       "hotspots": {
         "mod1": { "left": "65.5%", "top": "12.9%" },
