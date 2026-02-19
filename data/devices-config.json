@@ -4,7 +4,7 @@
       "id": "nova-l-lte",
       "name": "Orion NOVA L (LTE)",
       "title": "Калькулятор ємності АКБ • Orion NOVA L (LTE)",
-      "backLink": "../index.html",
+      "backLink": "https://tiras.technology/devices/orion-nova-l-lte/",
       "boardImage": "assets/boards/nova-l-lte.png",
       "hotspots": {
         "mod1": { "left": "31.7%", "top": "14.9%" },
