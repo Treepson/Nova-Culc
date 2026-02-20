@@ -85,8 +85,7 @@
     if (DEVICE_CONFIG.hasModSlot2 && hotspots.mod2) {
       boardWrap.innerHTML += `
         <button class="hotspot hot-mod-2" data-type="modules" data-device="main" title="Модулі"
-                style="left:${hotspots.mod2.left};top:${hotspots.mod2.top};">+
-                Модулі</button>
+                style="left:${hotspots.mod2.left};top:${hotspots.mod2.top};">+</button>
       `;
     }
     // Додаємо M-Z слот (тільки для NOVA M)
@@ -99,7 +98,7 @@
     // Додаємо клавіатури
     if (hotspots.kb) {
       boardWrap.innerHTML += `
-        <button class="hotspot hot-kb" data-type="keyboards" data-device="main" title="Зовнішні пристрої"
+        <button class="hotspot hot-kb" data-type="keyboards" data-device="main" title="Клавіатури"
                 style="left:${hotspots.kb.left};top:${hotspots.kb.top};">+</button>
       `;
     }
@@ -119,18 +118,6 @@
                 style="left:${hotspots.sir.left};top:${hotspots.sir.top};">+</button>
       `;
     }
-    // ===== LABELS OVERLAY =====
-if (hotspots.labels) {
-  Object.values(hotspots.labels).forEach(l => {
-    boardWrap.innerHTML += `
-      <div class="board-label"
-           style="left:${l.left}; top:${l.top};">
-        ${l.text}
-      </div>
-    `;
-  });
-}
-
   }
 
   // ====== HELPERS ======
