@@ -11,16 +11,8 @@
         "mod2": { "left": "41.2%", "top": "14.9%" },
         "kb": { "left": "49.9%", "top": "34.2%" },
         "sens": { "left": "30.7%", "top": "34.2%" },
-        "sir": { "left": "24%", "top": "20.8%" },
-      "labels": {
-        "mod1":   { "text": "Слот №1",     "left": "28.7%", "top": "17.7%" },
-        "mod2":   { "text": "Слот №2",     "left": "38.1%", "top": "17.7%" },
-        "kb":    { "text": "RS-485", "left": "46.6%", "top": "37%" },
-        "sens":  { "text": "Датчики",    "left": "27.4%", "top": "37%" },
-        "sir":   { "text": "Сирени",     "left": "21%", "top": "23.5%" }
-  }
+        "sir": { "left": "24%", "top": "20.8%" }
       },
-      
       "baseDevice": {
         "name": "Orion NOVA L (LTE)",
         "normal": 140,
