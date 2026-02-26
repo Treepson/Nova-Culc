@@ -388,9 +388,18 @@
       }
       inp.type="number"; inp.min="1"; inp.step="1"; inp.value=item.qty;
       inp.addEventListener("input",()=>{
-        let v = parseInt(inp.value||"1",10);
-        if(isNaN(v)||v<1) v=1;
-        item.qty=v;
+        // Allow empty while typing — don't reset mid-edit
+        const v = parseInt(inp.value, 10);
+        if (!isNaN(v) && v >= 1) {
+          item.qty = v;
+          updateTotals();
+          refreshAccordionBadges();
+        }
+      });
+      inp.addEventListener("blur",()=>{
+        let v = parseInt(inp.value, 10);
+        if (isNaN(v) || v < 1) v = 1;
+        item.qty = v;
         inp.value = v;
         updateTotals();
         refreshAccordionBadges();
@@ -966,8 +975,16 @@
         inp.step = "1";
         inp.value = r.qty;
         inp.addEventListener("input", ()=>{
-          let v = parseInt(inp.value || "1", 10);
-          if(isNaN(v) || v < 1) v = 1;
+          const v = parseInt(inp.value, 10);
+          if (!isNaN(v) && v >= 1) {
+            r.qty = v;
+            updateExtTotals(extId);
+            refreshExtAccordionBadges(extId);
+          }
+        });
+        inp.addEventListener("blur", ()=>{
+          let v = parseInt(inp.value, 10);
+          if (isNaN(v) || v < 1) v = 1;
           r.qty = v;
           inp.value = v;
           updateExtTotals(extId);
