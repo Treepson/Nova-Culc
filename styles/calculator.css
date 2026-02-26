@@ -1,7 +1,7 @@
 :root{
   --bg:#000;
   --fg:#fff;
-  --green:#00ff66;
+  --green:#30cd61;
   --green2:#00c853;
   --panel:#0c0c0c;
   --line:#1b1b1b;
@@ -56,7 +56,7 @@ body {
   width:38px;
   height:38px;
   border-radius:50%;
-  border:2px solid #0f3;
+  border:2px solid #30cd61;
   background:radial-gradient(circle at 30% 30%, var(--green), var(--green2));
   color:#021;
   font-weight:900;
@@ -176,7 +176,7 @@ th{color:#c0c0c0;font-weight:500;}
   max-height:90vh;
   background:#0b0b0b;
   border-radius:14px;
-  border:1px solid #0f3;
+  border:1px solid #30cd61;
   box-shadow:0 0 40px rgba(0,255,102,.3);
   padding:14px 16px 16px;
   display:flex;
@@ -210,9 +210,9 @@ th{color:#c0c0c0;font-weight:500;}
   font-size:14px;
 }
 .tab.active{
-  background:#00c853;
+  background:#30cd61;
   color:#001b0b;
-  border-color:#00ff66;
+  border-color:#30cd61;
   font-weight:600;
 }
 .tab-body{display:none;}
@@ -240,7 +240,7 @@ th{color:#c0c0c0;font-weight:500;}
 }
 .card:hover{
   transform:translateY(-2px);
-  border-color:#00ff66;
+  border-color:#30cd61;
   box-shadow:0 0 18px rgba(0,255,102,.35);
 }
 .card img {
@@ -282,7 +282,7 @@ th{color:#c0c0c0;font-weight:500;}
 }
 .model-btn:hover{
   background:#151515;
-  border-color:#00ff66;
+  border-color:#30cd61;
 }
 
 .mod-section{
@@ -320,15 +320,15 @@ th{color:#c0c0c0;font-weight:500;}
 .item-meta{font-size:12px;color:#a6ffcb;}
 .add-btn{
   border-radius:10px;
-  border:1px solid #00ff66;
-  background:#00c853;
+  border:1px solid #30cd61;
+  background:#30cd61;
   color:#001b0b;
   padding:6px 10px;
   cursor:pointer;
   font-size:13px;
   font-weight:600;
 }
-.add-btn:hover{background:#00ff66;}
+.add-btn:hover{background:#30cd61;}
 
 /* v8.4 overflow tweaks */
 .sheet{
@@ -355,8 +355,8 @@ th{color:#c0c0c0;font-weight:500;}
 }
 
 .card.selected{
-  outline:2px solid #00ff88;
-  box-shadow:0 0 12px #00ff88;
+  outline:2px solid #30cd61;
+  box-shadow:0 0 12px #30cd61;
   border-radius:12px;
 }
 .card.disabled{
@@ -514,7 +514,7 @@ th{color:#c0c0c0;font-weight:500;}
 
 /* Editable fields for custom sensors/sirens on ext devices */
 .ext-edit{width:160px;padding:3px 6px;background:#101010;border:1px solid #444;color:#fff;border-radius:4px;font-size:12px;}
-.ext-edit:focus{border-color:#00ff66;box-shadow:0 0 6px rgba(0,255,102,0.4);outline:none;}
+.ext-edit:focus{border-color:#30cd61;box-shadow:0 0 6px rgba(0,255,102,0.4);outline:none;}
 
 /* Row delete button */
 .row-del{
@@ -532,6 +532,456 @@ th{color:#c0c0c0;font-weight:500;}
 
 /* Used item indicator */
 .used-item {
-  outline: 2px solid #3fa93f !important;
+  outline: 2px solid #30cd61 !important;
   box-shadow: 0 0 10px rgba(0,255,0,0.7) !important;
 }
+
+/* ============================================================
+   MOBILE ACCORDION  (≤ 536px simplified mode)
+   ============================================================ */
+
+.mobile-accordion {
+  display: none; /* hidden by default, shown at ≤ 536px */
+  max-width: 96vw;
+  margin: 0 auto 4px;
+  padding: 0 10px;
+}
+
+@media (max-width: 536px) {
+  /* Приберається картинка приладу та розширюча */
+  .board-wrap      { display: none !important; }
+  .ext-board-wrap  { display: none !important; }
+  .mobile-accordion { display: block; }
+
+  /* Cпрощений режим таблиці */
+  .table-wrap tbody td:nth-child(2),
+  .ext-table tbody td:nth-child(2) { font-size: 13px; }
+
+  /* Caption change for simplified mode */
+  .subtitle { display: none; }
+  .subtitle-simple { display: block !important; }
+}
+
+/* Ext accordion spacing — sits inside ext-page */
+.ext-accordion {
+  margin-top: 8px;
+  margin-bottom: 4px;
+}
+
+/* Simple subtitle shown only in accordion mode */
+.subtitle-simple {
+  display: none;
+  margin-top: 6px;
+  color: #ccc;
+  font-size: clamp(13px, 2vw, 16px);
+  text-align: center;
+}
+
+/* Accordion item wrapper */
+.acc-item {
+  border: 1px solid #1c1c1c;
+  border-radius: 12px;
+  margin-bottom: 8px;
+  overflow: hidden;
+  background: #090909;
+}
+
+/* Accordion header button */
+.acc-header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding: 13px 14px;
+  background: #0f0f0f;
+  border: none;
+  color: #fff;
+  font-family: "Neue Machina", sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  text-align: left;
+  gap: 10px;
+  transition: background 0.2s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.acc-header:hover,
+.acc-header:focus-visible {
+  background: #161616;
+}
+
+.acc-label {
+  flex: 1;
+  min-width: 0;
+}
+
+/* Badge shows current selection */
+.acc-badge {
+  font-size: 11px;
+  color: var(--green);
+  background: rgba(48, 205, 97, 0.12);
+  border: 1px solid rgba(48, 205, 97, 0.28);
+  border-radius: 99px;
+  padding: 2px 9px;
+  white-space: nowrap;
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: none; /* shown only when has-item */
+}
+
+.acc-badge.has-item {
+  display: inline-block;
+}
+
+.acc-arrow {
+  color: var(--green);
+  font-size: 11px;
+  flex-shrink: 0;
+  opacity: 0.8;
+}
+
+/* Expanded accordion body */
+.acc-body {
+  display: none;
+  padding: 12px 10px 14px;
+  border-top: 1px solid #141414;
+  background: #060606;
+}
+
+.acc-body.open {
+  display: block;
+}
+
+/* Card grid inside accordion — 2 columns */
+.acc-card-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+/* Subsection separator (for Keyboards: families + extenders) */
+.acc-subsection {
+  margin-bottom: 14px;
+}
+
+.acc-subsection + .acc-subsection {
+  border-top: 1px solid #111;
+  padding-top: 12px;
+}
+
+/* Sub-section title (e.g. "Клавіатури:" / "Розширювачі:") */
+.acc-sub-title {
+  font-size: 11px;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  margin-bottom: 8px;
+}
+
+/* Group label inside extenders list */
+.acc-group-label {
+  font-size: 11px;
+  color: #fff;
+  margin: 8px 0 4px;
+}
+
+/* Model pills box (appears after clicking a keyboard family card) */
+.acc-models-box {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid #111;
+  min-height: 4px;
+}
+
+.acc-models-title {
+  font-size: 12px;
+  color: #fff;
+  margin-bottom: 8px;
+}
+
+/* Highlight model button briefly after adding */
+.model-btn.acc-model-added {
+  background: rgba(48, 205, 97, 0.2);
+  border-color: var(--green);
+  color: var(--green);
+}/* ============================================================
+   RESPONSIVE — Tablet & Mobile  (calculator pages)
+   ============================================================ */
+
+/* ---------- Tablet (≤ 1024px) ---------- */
+@media (max-width: 1024px) {
+  .stage { padding: 0 8px; }
+  .board-wrap,
+  .table-wrap,
+  .capacity,
+  .ext-table,
+  .ext-capacity,
+  .ext-actions { max-width: 96vw; }
+}
+
+/* ---------- Mobile (≤ 768px) ---------- */
+@media (max-width: 768px) {
+  .tiras-back { padding: 8px 14px !important; }
+  .tiras-back-link { font-size: 14px !important; }
+  .top-header { padding: 12px 12px 6px; }
+  .top-header h1 { font-size: clamp(16px, 4vw, 20px); }
+  .subtitle { font-size: 13px; padding: 0 4px; }
+
+  .device-tabs-inner { gap: 6px; padding: 0 8px; justify-content: center; }
+  .dev-tab-btn { font-size: 13px; padding: 5px 10px; }
+
+  /* Board scales to fit */
+  .board-wrap { max-width: 100vw; width: 100%; margin: 6px auto 12px; overflow: visible; }
+  .board { width: 100%; height: auto; min-width: unset; }
+  .hotspot {
+    width: 3.8vw !important; height: 3.8vw !important;
+    font-size: 2.2vw !important; min-width: 22px; min-height: 22px;
+    border-width: 1.5px !important;
+  }
+
+  /* ---- Table: unified card layout ---- */
+  .table-wrap {
+    max-width: 100vw;
+    padding: 8px 6px;
+    overflow-x: visible;
+  }
+
+  table { width: 100%; border-collapse: collapse; }
+
+  /* Hide header row */
+  .table-wrap thead,
+  .ext-table  thead { display: none; }
+
+  /* Each <tr> = CSS Grid card
+     Columns: [info: 1fr] [qty+action: auto]
+     Rows:    type / name / meta                          */
+  .table-wrap tbody tr,
+  .ext-table  tbody tr {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-rows: auto auto auto;
+    grid-template-areas:
+      "type   type"
+      "name   qty"
+      "meta   act";
+    border: 1px solid #1c1c1c;
+    border-radius: 10px;
+    margin-bottom: 8px;
+    padding: 9px 12px;
+    background: #0a0a0a;
+    gap: 0 8px;
+  }
+
+  .table-wrap tbody td,
+  .ext-table  tbody td {
+    border: none;
+    padding: 0;
+    font-size: 13px;
+    line-height: 1.4;
+  }
+
+  /* td 1 — Type */
+  .table-wrap tbody td:nth-child(1),
+  .ext-table  tbody td:nth-child(1) {
+    grid-area: type;
+    font-size: 10px;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 3px;
+  }
+
+  /* td 2 — Name */
+  .table-wrap tbody td:nth-child(2),
+  .ext-table  tbody td:nth-child(2) {
+    grid-area: name;
+    font-size: 14px;
+    font-weight: 500;
+    color: #fff;
+    align-self: center;
+  }
+
+  /* td 3 + td 4 — Norm & Alarm: both sit in "meta" area as inline-flex
+     We use a subgrid trick: td3 is meta, td4 overlaps via display:contents parent
+     Simplest real solution: td3 takes meta, td4 is absolute or… we use JS row wrapper.
+     CLEANEST pure CSS: td3 = meta area, make it flex and use td4 as a sibling
+     that we position with negative margin or place in "act" row override.
+
+     Actually: grid-area on td4 can also be "meta" — both in same cell = overlap.
+     So instead: put BOTH in a shared flex row by making td3 a flex container
+     and using ~ sibling. We can't do that in CSS alone.
+
+     Real fix: make the bottom row a 3-col subgrid spanning both cols.
+     We do: td3 spans col1, td4 continues, td6 is at the end.             */
+
+  /* Bottom info row: td3 (norm) + td4 (alarm) + td6 (action) in one line */
+  .table-wrap tbody td:nth-child(3),
+  .ext-table  tbody td:nth-child(3) {
+    grid-column: 1; grid-row: 3;
+    display: flex; align-items: center; gap: 5px;
+    font-size: 11px; color: #fff;
+    border-top: 1px solid #111;
+    padding-top: 6px; margin-top: 4px;
+  }
+  .table-wrap tbody td:nth-child(3)::before,
+  .ext-table  tbody td:nth-child(3)::before {
+    content: "Норма, мА:";
+    color: #fff; white-space: nowrap;
+  }
+
+  /* td 4 — alarm: visually after td3, both in row 3 — use position trick:
+     td4 has no grid-area, browser auto-places it after td3 in auto flow.
+     We override: put it in col 1 row 3 too — it will stack under td3.
+     Better: span td3 across both cols, use flex, hide td4 content via pseudo */
+
+  /* THE CLEAN SOLUTION:
+     - td3 spans BOTH columns in row 3, flex-row
+     - td4 is removed from grid flow (display:contents or hidden)
+     - td4 content shown inside td3 via CSS — NOT POSSIBLE for dynamic values
+
+     VERDICT: use JS to inject a wrapper div around td3+td4 content,
+     OR keep grid but accept td4 goes below td3.
+
+     We go with: td3 col1 row3, td4 col1 row4, td6 col2 row3/4 span.
+     This gives a clean 2-line meta section with action on the right.     */
+
+  .table-wrap tbody td:nth-child(4),
+  .ext-table  tbody td:nth-child(4) {
+    grid-column: 1; grid-row: 4;
+    display: flex; align-items: center; gap: 5px;
+    font-size: 11px; color: #fff;
+    padding-bottom: 2px;
+  }
+  .table-wrap tbody td:nth-child(4)::before,
+  .ext-table  tbody td:nth-child(4)::before {
+    content: "Тривога, мА:";
+    color: #fff; white-space: nowrap;
+  }
+
+  /* td 5 — Quantity: right side, rows 2–3 */
+  .table-wrap tbody td:nth-child(5),
+  .ext-table  tbody td:nth-child(5) {
+    grid-column: 1; grid-row: 5 ;
+    display: flex; align-items: center; justify-content: flex-start;
+    align-self: center;
+    gap: 8px;
+    font-size: 11px;
+  }
+
+  /* td 6 — Action: right side, rows 3–4 */
+  .table-wrap tbody td:nth-child(6),
+  .ext-table  tbody td:nth-child(6) {
+    grid-column: 2; grid-row: 3 / 5;
+    display: flex; align-items: flex-end; justify-content: flex-end;
+    padding-bottom: 2px;
+  }
+
+  /* Update grid template to include row 4 */
+  .table-wrap tbody tr,
+  .ext-table  tbody tr {
+    grid-template-rows: auto auto auto auto;
+  }
+
+  .table-wrap .qty input,
+  .ext-table  .qty input {
+    width: 58px;
+    padding: 5px 6px;
+    font-size: 13px;
+    text-align: center;
+  }
+
+  /* Locked qty */
+  .table-wrap tbody td:nth-child(5) input.locked,
+  .ext-table  tbody td:nth-child(5) input.locked {
+    background: #0d0d0d;
+    color: #fff;
+    border-color: #1a1a1a;
+  }
+  .table-wrap tbody tr:has(.qty) td:nth-child(5)::before,
+  .ext-table  tbody tr:has(.qty) td:nth-child(5)::before {
+    content: "Кількість:"; color: #fff; white-space: nowrap;
+  }
+  .table-wrap tbody tr:has(.qty) td:nth-child(6),
+  .ext-table  tbody tr:has(.qty) td:nth-child(6) {
+    grid-column: 2; grid-row: 5;
+  }
+
+  /* ── Editable rows (Своє значення) ─────────────── */
+  /* Name input: full col-span */
+  .table-wrap tbody tr:has(.ext-edit) td:nth-child(2) .ext-edit,
+  .ext-table  tbody tr:has(.ext-edit) td:nth-child(2) .ext-edit {
+    width: 100%; font-size: 13px; padding: 5px 8px; box-sizing: border-box;
+  }
+
+  /* Norm / Alarm inputs */
+  .table-wrap tbody tr:has(.ext-edit) td:nth-child(3) .ext-edit,
+  .table-wrap tbody tr:has(.ext-edit) td:nth-child(4) .ext-edit,
+  .ext-table  tbody tr:has(.ext-edit) td:nth-child(3) .ext-edit,
+  .ext-table  tbody tr:has(.ext-edit) td:nth-child(4) .ext-edit {
+    width: 72px; font-size: 12px; padding: 4px 6px;
+  }
+
+  /* Qty row for custom items */
+  .table-wrap tbody tr:has(.ext-edit) td:nth-child(5),
+  .ext-table  tbody tr:has(.ext-edit) td:nth-child(5) {
+    grid-column: 1; grid-row: 5;
+    justify-content: flex-start;
+    gap: 8px; font-size: 11px; color: #fff;
+  }
+  .table-wrap tbody tr:has(.ext-edit) td:nth-child(5)::before,
+  .ext-table  tbody tr:has(.ext-edit) td:nth-child(5)::before {
+    content: "Кількість:"; color: #fff; white-space: nowrap;
+  }
+  .table-wrap tbody tr:has(.ext-edit) td:nth-child(6),
+  .ext-table  tbody tr:has(.ext-edit) td:nth-child(6) {
+    grid-column: 2; grid-row: 5;
+  }
+
+  .table-actions { margin-bottom: 8px; }
+  .btn { font-size: 12px; padding: 7px 10px; }
+  .row-del { font-size: 16px; padding: 2px 4px; color: #ff4444; }
+  .add-btn { align-self: flex-end; padding: 5px 12px; font-size: 12px; }
+  /* Ext board */
+  .ext-board-wrap { width: 100%; overflow: visible; }
+  .ext-board { width: 100%; height: auto; min-width: unset; }
+  .ext-table, .ext-capacity, .ext-actions { max-width: 98vw; }
+}
+
+/* ---------- Mobile portrait (≤ 480px) ---------- */
+@media (max-width: 480px) {
+  .tiras-back { padding: 7px 10px !important; }
+  .device-tabs-inner { flex-wrap: wrap; padding: 0 6px; gap: 5px; }
+  .dev-tab-btn { font-size: 12px; padding: 5px 9px; border-radius: 14px; }
+  .hotspot { width: 4.5vw !important; height: 4.5vw !important; font-size: 2.6vw !important; }
+
+  /* Card name slightly smaller */
+  .table-wrap tbody td:nth-child(2),
+  .ext-table  tbody td:nth-child(2) { font-size: 13px; }
+  .table-wrap .qty input,
+  .ext-table  .qty input { width: 44px; }
+
+  .row { font-size: 12px; }
+  .row label { font-size: 11px; }
+  .row input, .hours { width: 56px; }
+
+  .sheet { max-height: 90vh; padding: 14px 10px 22px; }
+  .tab-body { max-height: 62vh; }
+  .mod-grid { padding: 4px; gap: 6px; }
+  .mod-section h4 { font-size: 13px; }
+  .model-btn { font-size: 12px; padding: 5px 9px; }
+  .model-list { gap: 6px; }
+  .ext-edit { width: 110px; font-size: 11px; }
+}
+
+/* ---------- Very small (≤ 360px) ---------- */
+@media (max-width: 360px) {
+  .tiras-back-link { font-size: 13px !important; }
+  .top-header h1 { font-size: 14px; }
+  .subtitle { font-size: 12px; }
+  .hotspot { width: 5vw !important; height: 5vw !important; font-size: 3vw !important; min-width: 18px; min-height: 18px; }
+  .table-wrap tbody td:nth-child(2),
+  .ext-table  tbody td:nth-child(2) { font-size: 12px; }
+}
+

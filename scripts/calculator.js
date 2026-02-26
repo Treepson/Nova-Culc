@@ -28,6 +28,10 @@
       const componentsResponse = await fetch('../data/components.json');
       COMPONENTS_DATA = await componentsResponse.json();
 
+      // Оновлюємо SLOT_LIMITS після завантаження даних
+      SLOT_LIMITS = COMPONENTS_DATA.slotLimits || {};
+      MODULE_CONFLICTS = COMPONENTS_DATA.moduleConflicts || [];
+
       // Фільтруємо модулі згідно excludeModules
       const filteredModules = COMPONENTS_DATA.modulesInner.filter(
         m => !DEVICE_CONFIG.excludeModules.includes(m.name)
@@ -76,7 +80,7 @@
     // Додаємо модуль слот 1 (завжди є)
     if (hotspots.mod1) {
       boardWrap.innerHTML += `
-        <button class="hotspot hot-mod-1" data-type="modules" data-device="main" title="Модулі" 
+        <button class="hotspot hot-mod-1" data-type="modules" data-device="main" title="Слот №1" 
                 style="left:${hotspots.mod1.left};top:${hotspots.mod1.top};">+</button>
       `;
     }
@@ -84,7 +88,7 @@
     // Додаємо модуль слот 2 (якщо є)
     if (DEVICE_CONFIG.hasModSlot2 && hotspots.mod2) {
       boardWrap.innerHTML += `
-        <button class="hotspot hot-mod-2" data-type="modules" data-device="main" title="Модулі"
+        <button class="hotspot hot-mod-2" data-type="modules" data-device="main" title="Слот №2"
                 style="left:${hotspots.mod2.left};top:${hotspots.mod2.top};">+</button>
       `;
     }
@@ -98,7 +102,7 @@
     // Додаємо клавіатури
     if (hotspots.kb) {
       boardWrap.innerHTML += `
-        <button class="hotspot hot-kb" data-type="keyboards" data-device="main" title="Клавіатури"
+        <button class="hotspot hot-kb" data-type="keyboards" data-device="main" title="RS-485"
                 style="left:${hotspots.kb.left};top:${hotspots.kb.top};">+</button>
       `;
     }
@@ -131,7 +135,19 @@
   
   const cart = new Map();
   let universalSlots = [null, null];
-  const SLOT_LIMITS = COMPONENTS_DATA ? COMPONENTS_DATA.slotLimits : {};
+  let SLOT_LIMITS = {};    // populated after loadConfigs()
+  let MODULE_CONFLICTS = []; // populated after loadConfigs()
+
+  // Returns true if placing `modName` would conflict with already-slotted modules
+  // (ignoring the slot at `ignoreSlotIndex` — the one being replaced)
+  function hasConflict(modName, ignoreSlotIndex) {
+    const conflictGroup = MODULE_CONFLICTS.find(g => g.includes(modName));
+    if (!conflictGroup) return false;
+    return universalSlots.some((s, idx) => {
+      if (idx === ignoreSlotIndex) return false;
+      return s && conflictGroup.includes(s.name) && s.name !== modName;
+    });
+  }
   
   let currentSlotIndex = null;
   let slotButtons = [];
@@ -190,7 +206,7 @@
       }else{
         btn.classList.remove("occupied");
         btn.classList.add("free");
-        btn.title = "Модулі";
+        btn.title = `Слот №${idx+1}`;
         btn.textContent = "+";
       }
     });
@@ -297,7 +313,7 @@
 
   function renderTable(){
     rowsEl.innerHTML = "";
-    const order = ["Прилад","Модуль","Модуль (корпус)","Клавіатура","Датчик","Сирена"];
+    const order = ["Прилад","Модуль","Модуль (RS-485)","Клавіатура","Датчик","Сирена"];
     const arr = Array.from(cart.values()).sort((a,b)=>{
       const ai = order.indexOf(a.type);
       const bi = order.indexOf(b.type);
@@ -377,6 +393,7 @@
         item.qty=v;
         inp.value = v;
         updateTotals();
+        refreshAccordionBadges();
       });
       tdQty.appendChild(inp);
       tr.appendChild(tdQty);
@@ -384,7 +401,7 @@
       const tdAct = document.createElement("td");
       if(item.fixed){
         const span=document.createElement("span");
-        span.textContent="база";
+        span.textContent="ППК";
         span.style.fontSize="12px";
         span.style.color="#9fe8b7";
         tdAct.appendChild(span);
@@ -404,6 +421,7 @@
             updateTotals();
             updateMzHotspotState();
           }
+          refreshAccordionBadges();
         });
         tdAct.appendChild(btn);
       }
@@ -627,11 +645,13 @@
 
       const freeSlots = universalSlots.filter(s=>!s).length;
 
+      const isConflicted = !isSelected && hasConflict(m.name, currentSlotIndex === null ? -1 : currentSlotIndex);
+
       let isFull;
       if(currentSlotIndex === null){
-        isFull = (total >= max) || (freeSlots === 0);
+        isFull = (total >= max) || (freeSlots === 0) || isConflicted;
       }else{
-        isFull = (!isSelected && other >= max);
+        isFull = (!isSelected && other >= max) || isConflicted;
       }
 
       if(isSelected){
@@ -700,7 +720,7 @@
           if(m.name === "M-ZP box" || m.name === "M-ZP mBox" || m.name === "M-ZP sBox"){
             createExtTab(m);
           }else{
-            addItem("Модуль (корпус)", m, { type:"main", id:"main" });
+            addItem("Модуль (RS-485)", m, { type:"main", id:"main" });
           }
           modal.classList.remove("open");
         });
@@ -854,6 +874,11 @@
     if(stageEl){
       stageEl.style.display = (id === "main") ? "" : "none";
     }
+    // Main mobile accordion follows stage visibility
+    const mainAcc = document.getElementById("mobileAccordion");
+    if(mainAcc){
+      mainAcc.style.display = (id === "main") ? "" : "none";
+    }
     if(extPagesEl){
       if(id === "main"){
         extPagesEl.style.display = "none";
@@ -946,6 +971,7 @@
           r.qty = v;
           inp.value = v;
           updateExtTotals(extId);
+          refreshExtAccordionBadges(extId);
         });
         tdQty.appendChild(inp);
       }
@@ -999,6 +1025,9 @@
       const hasOut = rows.some(r => r.name === "M-OUT2R");
       modxBtn.classList.toggle("occupied", hasOut);
     }
+
+    // Refresh mobile accordion badges for this extender
+    refreshExtAccordionBadges(extId);
   }
 
   function updateExtTotals(extId){
@@ -1078,11 +1107,14 @@
     page.innerHTML = `
       <div class="ext-board-wrap">
         <img src="../${mod.img || "assets/modules/M-ZP box.png"}" alt="${mod.name}" class="ext-board">
-        <button class="hotspot ext hot-ext-sens" data-type="sensors" data-device="${safeId}" style="left:${hs.sens.left}%;top:${hs.sens.top}%;">+</button>
-        <button class="hotspot ext hot-ext-modx" data-type="modules" data-device="${safeId}" style="left:${hs.modx.left}%;top:${hs.modx.top}%;">+</button>
-        <button class="hotspot ext hot-ext-power" data-type="modules" data-device="${safeId}" style="left:${hs.power.left}%;top:${hs.power.top}%;">+</button>
-        <button class="hotspot ext hot-ext-sir" data-type="sirens" data-device="${safeId}" style="left:${hs.sir.left}%;top:${hs.sir.top}%;">+</button>
+        <button class="hotspot ext hot-ext-modx" data-type="modules" title="M-OUT2R" data-device="${safeId}" style="left:${hs.modx.left}%;top:${hs.modx.top}%;">+</button>
+        <button class="hotspot ext hot-ext-sens" data-type="sensors" title="Датчики" data-device="${safeId}" style="left:${hs.sens.left}%;top:${hs.sens.top}%;">+</button>
+        <button class="hotspot ext hot-ext-power" data-type="modules" title="RS-485"data-device="${safeId}" style="left:${hs.power.left}%;top:${hs.power.top}%;">+</button>
+        <button class="hotspot ext hot-ext-sir" data-type="sirens" title="Сирени" data-device="${safeId}" style="left:${hs.sir.left}%;top:${hs.sir.top}%;">+</button>
       </div>
+
+      <!-- Mobile accordion for this extender (≤ 536px) -->
+      <div id="mobileAccordion-${safeId}" class="mobile-accordion ext-accordion"></div>
 
       <section class="table-wrap ext-table">
         <table>
@@ -1144,6 +1176,7 @@
         btn.style.left = hs.sens2.left + "%";
         btn.style.top  = hs.sens2.top  + "%";
         btn.textContent = "+";
+        btn.title = "M-Z";
         wrap.appendChild(btn);
       }
     }
@@ -1186,6 +1219,11 @@
       deviceTypeSwitch.dataset.visible = "true";
     }
     switchDeviceTab(safeId);
+
+    // Build mobile accordion for this extender
+    if (window.innerWidth <= 536) {
+      buildExtAccordion(safeId, mod, hs);
+    }
   }
 
 
@@ -1279,6 +1317,35 @@
     attachEvents();
     updateMzHotspotState();
     attachPdfExport();
+
+    // Mobile accordion
+    buildMobileAccordion();
+    const clearBtnEl = document.getElementById("clearAll");
+    if (clearBtnEl) {
+      clearBtnEl.addEventListener("click", () => {
+        refreshAccordionBadges();
+        document.querySelectorAll(".acc-body.open").forEach(b => {
+          b.classList.remove("open");
+          b.innerHTML = "";
+        });
+        document.querySelectorAll(".acc-arrow").forEach(a => a.textContent = "\u25BC");
+      });
+    }
+    let _lastMobile = window.innerWidth <= 536;
+    window.addEventListener("resize", () => {
+      const nowMobile = window.innerWidth <= 536;
+      if (nowMobile !== _lastMobile) {
+        _lastMobile = nowMobile;
+        if (nowMobile) {
+          buildMobileAccordion();
+          // Also build any already-created ext accordions
+          extDevices.forEach((dev, safeId) => {
+            const hs = COMPONENTS_DATA && COMPONENTS_DATA.extHotspots[dev.name];
+            buildExtAccordion(safeId, dev, hs);
+          });
+        }
+      }
+    });
   }
 
   document.addEventListener("DOMContentLoaded", init);
@@ -1286,15 +1353,6 @@
   // ========== PDF EXPORT FUNCTIONALITY ==========
 
   function generatePDF() {
-    // Перевірка чи є дані для експорту
-    //if (cart.size <= 1) { // Тільки базовий прилад
-    //  alert('Додайте компоненти для розрахунку перед експортом в PDF');
-    //  return;
-    //}
-
-    // Створюємо вікно для друку з красивим форматуванням
-    const printWindow = window.open('', '_blank');
-
     const deviceName = DATA.base.device;
     const currentDate = new Date().toLocaleDateString('uk-UA', {
       year: 'numeric',
@@ -1304,7 +1362,7 @@
 
     // Збираємо дані з таблиці
     let tableRows = '';
-    const order = ["Прилад","Модуль","Модуль (корпус)","Клавіатура","Датчик","Сирена"];
+    const order = ["Прилад","Модуль","Модуль (RS-485)","Клавіатура","Датчик","Сирена"];
     const arr = Array.from(cart.values()).sort((a,b)=>{
       const ai = order.indexOf(a.type);
       const bi = order.indexOf(b.type);
@@ -1435,7 +1493,7 @@
       align-items: flex-start;
       margin-bottom: 30px;
       padding-bottom: 20px;
-      border-bottom: 3px solid #00ff66;
+      border-bottom: 3px solid #30cd61;
     }
     
     .logo-section {
@@ -1467,14 +1525,16 @@
     
     .doc-subtitle {
       font-size: 18px;
-      color: #00c853;
+      color: #30cd61;
       font-weight: 600;
       margin-bottom: 10px;
+      margin-left: 48px;
     }
     
     .doc-date {
       font-size: 12px;
       color: #666;
+      margin-left: 25px;
     }
     
     .section {
@@ -1482,6 +1542,8 @@
     }
     
     .section-title {
+      break-after: avoid;
+      page-break-after: avoid;
       font-size: 16px;
       font-weight: 700;
       color: #000;
@@ -1527,10 +1589,18 @@
     tr:nth-child(even) {
       background: #fafafa;
     }
+    tr {
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
     
     .summary-box {
+      break-inside: avoid;
+      page-break-inside: avoid;
+      break-before: avoid;
+      page-break-before: avoid;
       background: linear-gradient(135deg, #f0fff4, #e6ffe6);
-      border: 2px solid #00ff66;
+      border: 2px solid #30cd61;
       border-radius: 8px;
       padding: 20px;
       margin-top: 20px;
@@ -1547,7 +1617,7 @@
       border-bottom: none;
       margin-top: 10px;
       padding-top: 15px;
-      border-top: 2px solid #00c853;
+      border-top: 2px solid #30cd61;
     }
     
     .summary-label {
@@ -1557,7 +1627,7 @@
     
     .summary-value {
       font-weight: 700;
-      color: #00c853;
+      color: #30cd61;
     }
     
     .result-highlight {
@@ -1573,15 +1643,151 @@
       color: #999;
     }
     
-    @media print {
-      body {
-        padding: 20px;
-      }
-      
-      .no-print {
-        display: none;
-      }
-    }
+      /* ===========================
+   MOBILE ADAPTIVE
+   =========================== */
+
+@media (max-width: 592px) {
+
+  body {
+    padding: 16px;
+  }
+
+  /* HEADER */
+  .header {
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .logo {
+    width: 120px;
+    margin-bottom: 6px;
+  }
+
+  .doc-info {
+    text-align: left;
+  }
+
+  .doc-title {
+    font-size: 18px;
+  }
+
+  .doc-subtitle {
+    font-size: 14px;
+  }
+
+  .doc-date {
+    font-size: 11px;
+  }
+
+  /* SECTIONS */
+  .section {
+    margin-bottom: 24px;
+  }
+
+  .section-title {
+    font-size: 14px;
+  }
+
+  .device-model {
+    font-size: 12px;
+  }
+
+  /* TABLES */
+  table {
+    font-size: 12px;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  th, td {
+    padding: 8px 6px;
+  }
+
+  th:nth-child(1), th:nth-child(2) {
+    text-align: center;
+}
+
+  /* SUMMARY */
+  .summary-box {
+    padding: 14px;
+  }
+
+  .summary-row {
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .summary-label {
+    font-size: 12px;
+  }
+
+  .summary-value {
+    font-size: 14px;
+  }
+
+  .result-highlight {
+    font-size: 18px;
+  }
+
+  /* FOOTER */
+  .footer {
+    font-size: 10px;
+    margin-top: 30px;
+  }
+}
+  @media (max-width: 592px) {
+  table {
+    box-shadow: inset -8px 0 8px -8px rgba(0,0,0,0.2);
+    display: block;
+    scrollbar-width: thin;
+  }
+}
+  @media (max-width: 327px) {
+  .header {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .doc-title, .doc-subtitle, .doc-date {
+    margin-left: 0;
+    align-items: center;
+    text-align: center;
+  }
+}
+  /* ===========================
+   PRINT STYLES
+   =========================== */
+    
+@media print {
+  .no-print,
+  .print-actions {
+    display: none !important;
+  }
+  th:nth-child(1), th:nth-child(2) {
+    text-align: center;
+  }
+  .header {
+  border-bottom: none;
+  }
+  .doc-subtitle {
+  color: #000;
+  }
+  .summary-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;}
+
+  .summary-box {
+  border: 2px solid #000;
+  background: none;
+  }
+  .summary-value {
+  color: #000;
+  }
+  .summary-row:last-child {
+  border-top: 2px solid #000;}
+}
   </style>
 </head>
 <body>
@@ -1654,9 +1860,9 @@
     Цей документ згенеровано автоматично і має інформаційний характер
   </div>
 
-  <div class="no-print" style="margin-top: 30px; text-align: center;">
+  <div class="print-actions no-print" style="margin-top: 30px; text-align: center;">
     <button onclick="window.print()" style="
-      background: linear-gradient(135deg, #00c853, #00ff66);
+      background: linear-gradient(135deg, #30cd61, #00ff66);
       color: #000;
       border: none;
       padding: 12px 30px;
@@ -1664,7 +1870,7 @@
       font-weight: 600;
       cursor: pointer;
       border-radius: 8px;
-      margin-right: 10px;
+      margi: 10px;
     ">🖨️ Друкувати</button>
     <button onclick="window.close()" style="
       background: #f0f0f0;
@@ -1682,13 +1888,24 @@
     `;
     
 
-    printWindow.document.write(html);
-    printWindow.document.close();
+    // Print via hidden iframe — avoids "about:blank" in headers
+    let printFrame = document.getElementById('__printFrame');
+    if (printFrame) printFrame.remove();
+    printFrame = document.createElement('iframe');
+    printFrame.id = '__printFrame';
+    printFrame.style.cssText = 'position:fixed;top:-9999px;left:-9999px;width:1px;height:1px;border:none;';
+    document.body.appendChild(printFrame);
 
-    // Автоматично відкриваємо діалог друку через секунду
+    const doc = printFrame.contentDocument || printFrame.contentWindow.document;
+    doc.open();
+    doc.write(html);
+    doc.close();
+
     setTimeout(() => {
-      printWindow.focus();
-    }, 500);
+      printFrame.contentWindow.focus();
+      printFrame.contentWindow.print();
+      setTimeout(() => printFrame.remove(), 2000);
+    }, 400);
   }
 
   // Додаємо обробник для кнопки експорту (буде підключено в init)
@@ -1696,6 +1913,582 @@
     const exportBtn = document.getElementById('exportPdf');
     if (exportBtn) {
       exportBtn.addEventListener('click', generatePDF);
+    }
+  }
+
+
+
+  // ========== MOBILE ACCORDION (≤ 536px) ==========
+
+  let _accEl = null; // reference to #mobileAccordion
+
+  function buildMobileAccordion() {
+    _accEl = document.getElementById("mobileAccordion");
+    if (!_accEl) return;
+    _accEl.innerHTML = "";
+
+    const sections = [];
+
+    if (DEVICE_CONFIG.hotspots.mod1) {
+      sections.push({ id: "acc-mod-0", label: "Слот №1", type: "mod-slot", slotIndex: 0 });
+    }
+    if (DEVICE_CONFIG.hasModSlot2 && DEVICE_CONFIG.hotspots.mod2) {
+      sections.push({ id: "acc-mod-1", label: "Слот №2", type: "mod-slot", slotIndex: 1 });
+    }
+    if (DEVICE_CONFIG.hasMzSlot) {
+      sections.push({ id: "acc-mz", label: "Модуль M-Z", type: "main-mz" });
+    }
+    sections.push({ id: "acc-kb",   label: "RS-485", type: "keyboards" });
+    sections.push({ id: "acc-sens", label: "Датчики",              type: "sensors"   });
+    sections.push({ id: "acc-sir",  label: "Сирени",               type: "sirens"    });
+
+    sections.forEach(sec => {
+      const wrap = document.createElement("div");
+      wrap.className = "acc-item";
+
+      const header = document.createElement("button");
+      header.className = "acc-header";
+      header.innerHTML =
+        '<span class="acc-label">' + sec.label + "</span>" +
+        '<span class="acc-badge" id="' + sec.id + '-badge"></span>' +
+        '<span class="acc-arrow">▼</span>';
+
+      const body = document.createElement("div");
+      body.className = "acc-body";
+      body.id = sec.id + "-body";
+
+      header.addEventListener("click", () => {
+        const isOpen = body.classList.contains("open");
+        // Close all
+        _accEl.querySelectorAll(".acc-body").forEach(b => {
+          b.classList.remove("open");
+          b.innerHTML = "";
+        });
+        _accEl.querySelectorAll(".acc-arrow").forEach(a => a.textContent = "▼");
+
+        if (!isOpen) {
+          body.classList.add("open");
+          header.querySelector(".acc-arrow").textContent = "▲";
+          renderAccBody(body, sec);
+        }
+      });
+
+      wrap.appendChild(header);
+      wrap.appendChild(body);
+      _accEl.appendChild(wrap);
+    });
+
+    refreshAccordionBadges();
+  }
+
+  // ---- Render accordion body based on section type ----
+
+  function renderAccBody(body, sec) {
+    body.innerHTML = "";
+    if (sec.type === "mod-slot")  renderAccModSlot(body, sec.slotIndex);
+    else if (sec.type === "main-mz")  renderAccMz(body);
+    else if (sec.type === "keyboards") renderAccKeyboards(body);
+    else if (sec.type === "sensors")  renderAccGenericList(body,
+      [...DATA.sensors, { name: "Своє значення", img: "assets/tiras_logo_w.png", normal: 0, alarm: 0, custom: true }],
+      "Датчик");
+    else if (sec.type === "sirens")   renderAccGenericList(body,
+      [...DATA.sirens,  { name: "Своє значення", img: "assets/tiras_logo_w.png", normal: 0, alarm: 0, custom: true }],
+      "Сирена");
+  }
+
+  // ---- Module slot section ----
+
+  function renderAccModSlot(body, slotIndex) {
+    body.innerHTML = "";
+    const grid = document.createElement("div");
+    grid.className = "acc-card-grid";
+
+    DATA.modulesInner.forEach(m => {
+      const max = (COMPONENTS_DATA && COMPONENTS_DATA.slotLimits && COMPONENTS_DATA.slotLimits[m.name]) || 1;
+      let otherCount = 0;
+      universalSlots.forEach((s, idx) => {
+        if (idx !== slotIndex && s && s.name === m.name) otherCount++;
+      });
+
+      const isSelected    = !!(universalSlots[slotIndex] && universalSlots[slotIndex].name === m.name);
+      const isConflicted  = !isSelected && hasConflict(m.name, slotIndex);
+      const isFull        = (!isSelected && otherCount >= max) || isConflicted;
+
+      const card = makeAccCard("../" + m.img, m.name);
+      if (isSelected) card.classList.add("selected");
+      if (isFull)     card.classList.add("disabled");
+
+      card.addEventListener("click", () => {
+        if (card.classList.contains("disabled")) return;
+        currentSlotIndex = slotIndex;
+        if (isSelected) {
+          universalSlots[slotIndex] = null;
+          updateSlotUI();
+          syncCartFromSlots();
+        } else {
+          assignModuleToSlot(slotIndex, m);
+        }
+        // Re-render this body to reflect new state
+        renderAccModSlot(body, slotIndex);
+        refreshAccordionBadges();
+      });
+
+      grid.appendChild(card);
+    });
+
+    body.appendChild(grid);
+  }
+
+  // ---- M-Z slot section ----
+
+  function renderAccMz(body) {
+    body.innerHTML = "";
+    const mzMod = { name: "M-Z", img: "assets/modules/M-Z.png", normal: 60, alarm: 60 };
+    const grid = document.createElement("div");
+    grid.className = "acc-card-grid";
+
+    const card = makeAccCard("../" + mzMod.img, mzMod.name);
+    if (cart.has("Модуль:M-Z")) card.classList.add("selected");
+
+    card.addEventListener("click", () => {
+      addItem("Модуль", mzMod);
+      renderTable();
+      updateMzHotspotState();
+      renderAccMz(body); // re-render for toggle state
+      refreshAccordionBadges();
+    });
+
+    grid.appendChild(card);
+    body.appendChild(grid);
+  }
+
+  // ---- Keyboards / RS-485 section ----
+
+  function renderAccKeyboards(body) {
+    // Keyboard families
+    const kbSection = document.createElement("div");
+    kbSection.className = "acc-subsection";
+
+    const kbTitle = document.createElement("div");
+    kbTitle.className = "acc-sub-title";
+    kbTitle.textContent = "Клавіатури:";
+    kbSection.appendChild(kbTitle);
+
+    const grid = document.createElement("div");
+    grid.className = "acc-card-grid";
+
+    const modelsBox = document.createElement("div");
+    modelsBox.className = "acc-models-box";
+
+    Object.entries(DATA.keyboardGroups).forEach(([group, info]) => {
+      const card = makeAccCard("../" + info.img, group);
+      card.addEventListener("click", () => {
+        grid.querySelectorAll(".card").forEach(c => c.classList.remove("selected"));
+        card.classList.add("selected");
+        showAccKbModels(modelsBox, group, info);
+      });
+      grid.appendChild(card);
+    });
+
+    kbSection.appendChild(grid);
+    kbSection.appendChild(modelsBox);
+    body.appendChild(kbSection);
+
+    // Extenders section (if device supports them)
+    if (DEVICE_CONFIG.supportsExtenders) {
+      const extSection = document.createElement("div");
+      extSection.className = "acc-subsection";
+
+      const extTitle = document.createElement("div");
+      extTitle.className = "acc-sub-title";
+      extTitle.textContent = "Розширювачі:";
+      extSection.appendChild(extTitle);
+
+      Object.entries(DATA.modulesExt).forEach(([group, list]) => {
+        const groupLabel = document.createElement("div");
+        groupLabel.className = "acc-group-label";
+        groupLabel.textContent = group;
+        extSection.appendChild(groupLabel);
+
+        const extGrid = document.createElement("div");
+        extGrid.className = "acc-card-grid";
+
+        list.forEach(m => {
+          const card = makeAccCard("../" + m.img, m.name);
+          card.addEventListener("click", () => {
+            if (m.name === "M-ZP box" || m.name === "M-ZP mBox" || m.name === "M-ZP sBox") {
+              createExtTab(m);
+            } else {
+              addItem("Модуль (RS-485)", m, { type: "main", id: "main" });
+              renderTable();
+            }
+            refreshAccordionBadges();
+            // Flash feedback
+            card.style.outline = "2px solid var(--green)";
+            setTimeout(() => { card.style.outline = ""; }, 500);
+          });
+          extGrid.appendChild(card);
+        });
+
+        extSection.appendChild(extGrid);
+      });
+
+      body.appendChild(extSection);
+    }
+  }
+
+  function showAccKbModels(box, group, info) {
+    box.innerHTML = "";
+    const title = document.createElement("div");
+    title.className = "acc-models-title";
+    title.textContent = group + " — моделі:"; // "— моделі:"
+
+    const list = document.createElement("div");
+    list.className = "model-list";
+    list.style.marginTop = "8px";
+
+    info.models.forEach(m => {
+      const btn = document.createElement("button");
+      btn.className = "model-btn";
+      btn.textContent = m.name;
+      btn.addEventListener("click", () => {
+        addItem("Клавіатура", m);
+        renderTable();
+        refreshAccordionBadges();
+        // Brief highlight
+        btn.classList.add("acc-model-added");
+        setTimeout(() => btn.classList.remove("acc-model-added"), 700);
+      });
+      list.appendChild(btn);
+    });
+
+    box.appendChild(title);
+    box.appendChild(list);
+  }
+
+  // ---- Generic list (sensors / sirens) ----
+
+  function renderAccGenericList(body, list, itemType) {
+    const grid = document.createElement("div");
+    grid.className = "acc-card-grid";
+
+    list.forEach(it => {
+      const card = makeAccCard("../" + it.img, it.name);
+      card.addEventListener("click", () => {
+        addItem(itemType, it);
+        renderTable();
+        refreshAccordionBadges();
+        // Flash
+        card.style.outline = "2px solid var(--green)";
+        setTimeout(() => { card.style.outline = ""; }, 500);
+      });
+      grid.appendChild(card);
+    });
+
+    body.appendChild(grid);
+  }
+
+  // ---- Helpers ----
+
+  function makeAccCard(imgSrc, name) {
+    const card = document.createElement("div");
+    card.className = "card";
+    const img = document.createElement("img");
+    img.src = imgSrc;
+    img.alt = name;
+    const label = document.createElement("div");
+    label.className = "card-label";
+    label.textContent = name;
+    card.appendChild(img);
+    card.appendChild(label);
+    return card;
+  }
+
+  function refreshAccordionBadges() {
+    if (!_accEl) return;
+
+    // Slot badges
+    [0, 1].forEach(idx => {
+      const badge = document.getElementById("acc-mod-" + idx + "-badge");
+      if (!badge) return;
+      const slot = universalSlots[idx];
+      badge.textContent = slot ? slot.name : "";
+      badge.classList.toggle("has-item", !!slot);
+    });
+
+    // M-Z badge
+    const mzBadge = document.getElementById("acc-mz-badge");
+    if (mzBadge) {
+      const has = cart.has("Модуль:M-Z");
+      mzBadge.textContent = has ? "Встановлено" : "";
+      mzBadge.classList.toggle("has-item", has);
+    }
+
+    // KB badge
+    const kbBadge = document.getElementById("acc-kb-badge");
+    if (kbBadge) {
+      const cnt = Array.from(cart.values())
+        .filter(i => i.type === "Клавіатура" || i.type === "Модуль (RS-485)")
+        .reduce((s, i) => s + i.qty, 0);
+      kbBadge.textContent = cnt ? String(cnt) : "";
+      kbBadge.classList.toggle("has-item", cnt > 0);
+    }
+
+    // Sensor badge
+    const sensBadge = document.getElementById("acc-sens-badge");
+    if (sensBadge) {
+      const cnt = Array.from(cart.values())
+        .filter(i => i.type === "Датчик")
+        .reduce((s, i) => s + i.qty, 0);
+      sensBadge.textContent = cnt ? String(cnt) : "";
+      sensBadge.classList.toggle("has-item", cnt > 0);
+    }
+
+    // Siren badge
+    const sirBadge = document.getElementById("acc-sir-badge");
+    if (sirBadge) {
+      const cnt = Array.from(cart.values())
+        .filter(i => i.type === "Сирена")
+        .reduce((s, i) => s + i.qty, 0);
+      sirBadge.textContent = cnt ? String(cnt) : "";
+      sirBadge.classList.toggle("has-item", cnt > 0);
+    }
+  }
+
+
+  // ========== EXT DEVICE MOBILE ACCORDION (≤ 536px) ==========
+
+  function buildExtAccordion(safeId, mod, hs) {
+    const accEl = document.getElementById("mobileAccordion-" + safeId);
+    if (!accEl) return;
+    accEl.innerHTML = "";
+
+    const sections = [];
+
+    // Sensors (always present)
+    sections.push({ id: "acc-ext-sens-"  + safeId, label: "Датчики",    type: "sensors",  safeId });
+
+    // M-Z module (sens2 hotspot)
+    if (hs && hs.sens2) {
+      sections.push({ id: "acc-ext-mz-" + safeId, label: "Модуль M-Z", type: "ext-mz",   safeId });
+    }
+
+    // M-OUT2R (modx hotspot — may be hidden if left=-100)
+    if (!hs || hs.modx.left !== -100) {
+      sections.push({ id: "acc-ext-modx-" + safeId, label: "M-OUT2R",  type: "ext-modx", safeId });
+    }
+
+    // RS-485 modules (power hotspot)
+    sections.push({ id: "acc-ext-pwr-"  + safeId, label: "Модулі",     type: "ext-power",safeId });
+
+    // Sirens
+    sections.push({ id: "acc-ext-sir-"  + safeId, label: "Сирени",     type: "sirens",   safeId });
+
+    sections.forEach(sec => {
+      const wrap = document.createElement("div");
+      wrap.className = "acc-item";
+
+      const header = document.createElement("button");
+      header.className = "acc-header";
+      header.innerHTML =
+        '<span class="acc-label">' + sec.label + '</span>' +
+        '<span class="acc-badge" id="' + sec.id + '-badge"></span>' +
+        '<span class="acc-arrow">\u25BC</span>';
+
+      const body = document.createElement("div");
+      body.className = "acc-body";
+      body.id = sec.id + "-body";
+
+      header.addEventListener("click", () => {
+        const isOpen = body.classList.contains("open");
+        // Close all in this accordion
+        accEl.querySelectorAll(".acc-body").forEach(b => {
+          b.classList.remove("open");
+          b.innerHTML = "";
+        });
+        accEl.querySelectorAll(".acc-arrow").forEach(a => a.textContent = "\u25BC");
+
+        if (!isOpen) {
+          body.classList.add("open");
+          header.querySelector(".acc-arrow").textContent = "\u25B2";
+          renderExtAccBody(body, sec);
+        }
+      });
+
+      wrap.appendChild(header);
+      wrap.appendChild(body);
+      accEl.appendChild(wrap);
+    });
+
+    refreshExtAccordionBadges(safeId);
+  }
+
+  // ---- Render ext accordion body ----
+
+  function renderExtAccBody(body, sec) {
+    body.innerHTML = "";
+    const safeId = sec.safeId;
+
+    if (sec.type === "sensors") {
+      const list = [
+        ...DATA.sensors,
+        { name: "Своє значення", img: "assets/tiras_logo_w.png", normal: 0, alarm: 0, custom: true }
+      ];
+      renderExtAccGenericList(body, list, "Датчик", safeId);
+
+    } else if (sec.type === "ext-mz") {
+      const mzMod = { name: "M-Z", img: "assets/modules/M-Z.png", normal: 60, alarm: 60 };
+      renderExtAccGenericList(body, [mzMod], "Модуль зон", safeId, true /* toggle */);
+
+    } else if (sec.type === "ext-modx") {
+      const modx = [{ name: "M-OUT2R", img: "assets/modules/M-OUT2R.png", normal: 40, alarm: 40 }];
+      renderExtAccGenericList(body, modx, "Модуль", safeId, true /* toggle */);
+
+    } else if (sec.type === "ext-power") {
+      const powerList = [
+        { name: "M-Z box",      img: "assets/modules/M-Z box.png",     normal: 60,  alarm: 60  },
+        { name: "M-OUT2R box",  img: "assets/modules/M-OUT2R box.png", normal: 40,  alarm: 40  },
+        { name: "M-OUT8R",      img: "assets/modules/M-OUT8R.png",     normal: 25,  alarm: 360 },
+        { name: "P-IND32",      img: "assets/modules/P-IND32.png",     normal: 5,   alarm: 5   }
+      ];
+      renderExtAccGenericList(body, powerList, "Модуль", safeId);
+
+    } else if (sec.type === "sirens") {
+      const list = [
+        ...DATA.sirens,
+        { name: "Своє значення", img: "assets/tiras_logo_w.png", normal: 0, alarm: 0, custom: true }
+      ];
+      renderExtAccGenericList(body, list, "Сирена", safeId);
+    }
+  }
+
+  // ---- Generic card grid for ext accordion ----
+
+  function renderExtAccGenericList(body, list, itemType, safeId, isToggle) {
+    body.innerHTML = "";
+    const dev = extDevices.get(safeId);
+    const grid = document.createElement("div");
+    grid.className = "acc-card-grid";
+
+    list.forEach(it => {
+      const card = makeAccCard("../" + it.img, it.name);
+
+      // Highlight if already in rows
+      if (dev) {
+        const inRows = dev.rows.some(r => r.name === it.name);
+        if (inRows && isToggle) card.classList.add("selected");
+      }
+
+      card.addEventListener("click", () => {
+        // Set context to this ext device
+        const prevContext = currentContext;
+        currentContext = { type: "ext", id: safeId };
+
+        if (isToggle && dev) {
+          const existIdx = dev.rows.findIndex(r => r.type === itemType && r.name === it.name ||
+                                                    r.name === it.name);
+          if (existIdx >= 0) {
+            dev.rows.splice(existIdx, 1);
+            recalcExtDevice(safeId);
+            card.classList.remove("selected");
+            currentContext = prevContext;
+            return;
+          }
+        }
+
+        addItem(itemType, it, { type: "ext", id: safeId });
+        currentContext = prevContext;
+
+        // Flash feedback
+        card.style.outline = "2px solid var(--green)";
+        setTimeout(() => { card.style.outline = ""; card.classList.remove("selected"); }, 500);
+
+        // Re-render body to reflect toggle state
+        const body = grid.parentNode;
+        if (body) {
+          const sec = { type: getSectionTypeFromItemType(itemType, it), safeId };
+          if (isToggle) {
+            // Re-render the whole body
+            const accEl = document.getElementById("mobileAccordion-" + safeId);
+            if (accEl) {
+              const openBody = accEl.querySelector(".acc-body.open");
+              if (openBody) renderExtAccBody(openBody, { type: getOpenSectionType(openBody.id, safeId), safeId });
+            }
+          }
+        }
+
+        refreshExtAccordionBadges(safeId);
+      });
+
+      grid.appendChild(card);
+    });
+
+    body.appendChild(grid);
+  }
+
+  function getSectionTypeFromItemType(itemType, it) {
+    if (itemType === "Датчик") return "sensors";
+    if (itemType === "Сирена") return "sirens";
+    if (itemType === "Модуль зон") return "ext-mz";
+    if (it && it.name === "M-OUT2R") return "ext-modx";
+    return "ext-power";
+  }
+
+  function getOpenSectionType(bodyId, safeId) {
+    if (bodyId.includes("-sens-"))  return "sensors";
+    if (bodyId.includes("-mz-"))    return "ext-mz";
+    if (bodyId.includes("-modx-"))  return "ext-modx";
+    if (bodyId.includes("-pwr-"))   return "ext-power";
+    if (bodyId.includes("-sir-"))   return "sirens";
+    return "sensors";
+  }
+
+  // ---- Ext accordion badge refresh ----
+
+  function refreshExtAccordionBadges(safeId) {
+    const dev = extDevices.get(safeId);
+    if (!dev) return;
+
+    // Sensors badge
+    const sensBadge = document.getElementById("acc-ext-sens-" + safeId + "-badge");
+    if (sensBadge) {
+      const cnt = dev.rows.filter(r => r.type === "Датчик").reduce((s, r) => s + r.qty, 0);
+      sensBadge.textContent = cnt ? String(cnt) : "";
+      sensBadge.classList.toggle("has-item", cnt > 0);
+    }
+
+    // M-Z badge
+    const mzBadge = document.getElementById("acc-ext-mz-" + safeId + "-badge");
+    if (mzBadge) {
+      const has = dev.rows.some(r => r.name === "M-Z");
+      mzBadge.textContent = has ? "Встановлено" : "";
+      mzBadge.classList.toggle("has-item", has);
+    }
+
+    // M-OUT2R badge
+    const modxBadge = document.getElementById("acc-ext-modx-" + safeId + "-badge");
+    if (modxBadge) {
+      const has = dev.rows.some(r => r.name === "M-OUT2R");
+      modxBadge.textContent = has ? "Встановлено" : "";
+      modxBadge.classList.toggle("has-item", has);
+    }
+
+    // Power modules badge
+    const pwrBadge = document.getElementById("acc-ext-pwr-" + safeId + "-badge");
+    if (pwrBadge) {
+      const cnt = dev.rows.filter(r =>
+        ["M-Z box", "M-OUT2R box", "M-OUT8R", "P-IND32"].includes(r.name)
+      ).reduce((s, r) => s + r.qty, 0);
+      pwrBadge.textContent = cnt ? String(cnt) : "";
+      pwrBadge.classList.toggle("has-item", cnt > 0);
+    }
+
+    // Sirens badge
+    const sirBadge = document.getElementById("acc-ext-sir-" + safeId + "-badge");
+    if (sirBadge) {
+      const cnt = dev.rows.filter(r => r.type === "Сирена").reduce((s, r) => s + r.qty, 0);
+      sirBadge.textContent = cnt ? String(cnt) : "";
+      sirBadge.classList.toggle("has-item", cnt > 0);
     }
   }
 
