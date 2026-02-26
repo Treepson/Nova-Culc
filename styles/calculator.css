@@ -430,11 +430,14 @@ th{color:#c0c0c0;font-weight:500;}
 
 .ext-board-wrap{
   position:relative;
-  display:inline-block;
+  display:flex;
+  justify-content:center;
   margin:0 auto 20px;
+  max-width:min(980px,96vw);
 }
 .ext-board{
   display:block;
+  width:100%;
   max-width:min(980px,96vw);
   border-radius:12px;
   box-shadow:0 0 24px rgba(0,255,102,.25);
