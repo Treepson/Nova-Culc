@@ -5,6 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title id="pageTitle">Калькулятор АКБ</title>
   <link rel="stylesheet" href="../styles/calculator.css">
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="../assets/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-32.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../assets/images/favicon-180.png">
 </head>
 <body>
   <header class="tiras-header">
@@ -18,6 +22,9 @@
   <header class="top-header">
     <h1 id="deviceTitle">Калькулятор ємності АКБ</h1>
     <p class="subtitle">Натисніть на «+» на платі, щоб додати клавіатури, модулі, датчики або сирени.</p>
+  <button id="proModeToggle" class="pro-toggle" title="PRO-режим: приховати підписи">
+    <span class="pro-icon">⚡</span><span class="pro-label">PRO</span>
+  </button>
   </header>
 
   <div class="device-tabs">
@@ -51,8 +58,8 @@
           <tr>
             <th>Тип</th>
             <th>Назва</th>
-            <th>Норма (мА)</th>
-            <th>Тривога (мА)</th>
+            <th>Норма, мА</th>
+            <th>Тривога, мА</th>
             <th>Кількість</th>
             <th></th>
           </tr>

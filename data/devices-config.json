@@ -7,11 +7,11 @@
       "backLink": "https://tiras.technology/devices/orion-nova-l-lte/",
       "boardImage": "assets/boards/nova-l-lte.webp",
       "hotspots": {
-        "mod1": { "left": "31.7%", "top": "14.9%" },
-        "mod2": { "left": "41.2%", "top": "14.9%" },
-        "kb": { "left": "49.9%", "top": "34.2%" },
-        "sens": { "left": "30.7%", "top": "34.2%" },
-        "sir": { "left": "24%", "top": "20.8%" }
+        "mod1": { "left": "33.7%", "top": "17.6%" },
+        "mod2": { "left": "43.2%", "top": "17.6%" },
+        "kb": { "left": "51.9%", "top": "37.2%" },
+        "sens": { "left": "32.7%", "top": "37.2%" },
+        "sir": { "left": "25.5%", "top": "23.4%" }
       },
       "baseDevice": {
         "name": "Orion NOVA L (LTE)",
@@ -30,11 +30,11 @@
       "backLink": "https://tiras.technology/devices/orion-nova-m-lte/",
       "boardImage": "assets/boards/nova-m-lte.webp",
       "hotspots": {
-        "mod1": { "left": "35.3%", "top": "14.9%" },
-        "mod2": { "left": "44.7%", "top": "14.9%" },
-        "kb": { "left": "60.5%", "top": "33.3%" },
-        "sens": { "left": "42.7%", "top": "33.3%" },
-        "sir": { "left": "64.7%", "top": "33.3%" }
+        "mod1": { "left": "37.3%", "top": "16.9%" },
+        "mod2": { "left": "46.7%", "top": "16.9%" },
+        "kb": { "left": "62.5%", "top": "36%" },
+        "sens": { "left": "44.5%", "top": "36%" },
+        "sir": { "left": "66.7%", "top": "36%" }
       },
       "baseDevice": {
         "name": "Orion NOVA M (LTE)",
@@ -53,11 +53,11 @@
       "backLink": "https://tiras.technology/devices/orion-nova-s-lte/",
       "boardImage": "assets/boards/nova-s-lte.webp",
       "hotspots": {
-        "mod1": { "left": "47.7%", "top": "9.9%" },
-        "mod2": { "left": "65.5%", "top": "9.9%" },
-        "kb": { "left": "75.6%", "top": "42.3%" },
-        "sens": { "left": "60.7%", "top": "42.3%" },
-        "sir": { "left": "81.7%", "top": "42.3%" }
+        "mod1": { "left": "49.7%", "top": "12.6%" },
+        "mod2": { "left": "67.5%", "top": "12.6%" },
+        "kb": { "left": "77.6%", "top": "45.3%" },
+        "sens": { "left": "62.7%", "top": "45.3%" },
+        "sir": { "left": "83.7%", "top": "45.3%" }
       },
       "baseDevice": {
         "name": "Orion NOVA S (LTE)",
@@ -76,11 +76,11 @@
       "backLink": "https://tiras.technology/devices/orion-nova-l/",
       "boardImage": "assets/boards/nova-l.webp",
       "hotspots": {
-        "mod1": { "left": "39.1%", "top": "11.9%" },
-        "mod2": { "left": "49.4%", "top": "11.9%" },
-        "kb": { "left": "51.9%", "top": "32.2%" },
-        "sens": { "left": "33.7%", "top": "32.2%" },
-        "sir": { "left": "67.1%", "top": "32.2%" }
+        "mod1": { "left": "41.1%", "top": "15%" },
+        "mod2": { "left": "51.4%", "top": "15%" },
+        "kb": { "left": "53.9%", "top": "35.2%" },
+        "sens": { "left": "35.7%", "top": "35.2%" },
+        "sir": { "left": "69.1%", "top": "35.2%" }
       },
       "baseDevice": {
         "name": "Orion NOVA L",
@@ -99,12 +99,12 @@
       "backLink": "https://tiras.technology/devices/orion-nova-m/",
       "boardImage": "assets/boards/nova-m.webp",
       "hotspots": {
-        "mod1": { "left": "39.1%", "top": "11.9%" },
-        "mod2": { "left": "49.4%", "top": "11.9%" },
-        "kb": { "left": "51.9%", "top": "32.2%" },
-        "sens": { "left": "33.7%", "top": "32.2%" },
-        "sir": { "left": "67.1%", "top": "32.2%" },
-        "mz": { "left": "58.1%", "top": "11.9%" }
+        "mod1": { "left": "41.1%", "top": "15%" },
+        "mod2": { "left": "51.4%", "top": "15%" },
+        "kb": { "left": "53.9%", "top": "35.2%" },
+        "sens": { "left": "35.7%", "top": "35.2%" },
+        "sir": { "left": "69.1%", "top": "35.2%" },
+        "mz": { "left": "61.4%", "top": "15%" }
       },
       "baseDevice": {
         "name": "Orion NOVA M",
@@ -123,11 +123,11 @@
       "backLink": "https://tiras.technology/devices/orion-nova-s/",
       "boardImage": "assets/boards/nova-s.webp",
       "hotspots": {
-        "mod1": { "left": "49.7%", "top": "12.9%" },
-        "mod2": { "left": "65.5%", "top": "12.9%" },
-        "kb": { "left": "66.2%", "top": "41.3%" },
-        "sens": { "left": "74.7%", "top": "41.3%" },
-        "sir": { "left": "51.7%", "top": "41.3%" }
+        "mod1": { "left": "51.7%", "top": "14.9%" },
+        "mod2": { "left": "67.5%", "top": "14.9%" },
+        "kb": { "left": "68.2%", "top": "43.8%" },
+        "sens": { "left": "76.7%", "top": "43.8%" },
+        "sir": { "left": "53.7%", "top": "43.8%" }
       },
       "baseDevice": {
         "name": "Orion NOVA S",
@@ -146,10 +146,10 @@
       "backLink": "https://tiras.technology/devices/orion-nova-xs/",
       "boardImage": "assets/boards/nova-xs.webp",
       "hotspots": {
-        "mod1": { "left": "65.5%", "top": "12.9%" },
-        "kb": { "left": "66.2%", "top": "41.3%" },
-        "sens": { "left": "74.7%", "top": "41.3%" },
-        "sir": { "left": "58%", "top": "41.3%" }
+        "mod1": { "left": "67.5%", "top": "14.9%" },
+        "kb": { "left": "68.2%", "top": "43.8%" },
+        "sens": { "left": "76.7%", "top": "43.8%" },
+        "sir": { "left": "53.7%", "top": "43.8%" }
       },
       "baseDevice": {
         "name": "Orion NOVA XS",

@@ -270,64 +270,64 @@
   "extHotspots": {
     "M-ZP box": {
       "sens": {
-        "left": 40.9,
-        "top": 30.0
+        "left": 42.9,
+        "top": 33.0
       },
       "sens2": {
-        "left": 51.4,
-        "top": 17.4
+        "left": 53.4,
+        "top": 20.0
       },
       "modx": {
         "left": -100,
         "top": -100
       },
       "power": {
-        "left": 74.2,
-        "top": 42.3
+        "left": 75.8,
+        "top": 44.8
       },
       "sir": {
         "left": 69.0,
-        "top": 42.3
+        "top": 44.8
       }
     },
     "M-ZP sBox": {
       "sens": {
-        "left": 51.3,
-        "top": 39.7
+        "left": 54.5,
+        "top": 42.4
       },
       "modx": {
-        "left": 78.1,
-        "top": 11.5
+        "left": 80.1,
+        "top": 14.2
       },
       "power": {
-        "left": 74.5,
-        "top": 39.7
+        "left": 76.3,
+        "top": 42.4
       },
       "sir": {
-        "left": 84.0,
-        "top": 39.7
+        "left": 85.0,
+        "top": 42.4
       }
     },
     "M-ZP mBox": {
       "sens": {
-        "left": 46.3,
-        "top": 20.9
+        "left": 48.4,
+        "top": 23.9
       },
       "modx": {
-        "left": 65.2,
-        "top": 13.2
+        "left": 67.2,
+        "top": 15.2
       },
       "power": {
-        "left": 55.1,
-        "top": 34.7
+        "left": 56.9,
+        "top": 36.7
       },
       "sir": {
-        "left": 65.8,
-        "top": 34.7
+        "left": 67.8,
+        "top": 36.7
       },
       "sens2": {
-        "left": 56.3,
-        "top": 15.9
+        "left": 58.3,
+        "top": 18.5
       }
     }
   },

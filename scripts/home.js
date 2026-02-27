@@ -8,49 +8,49 @@
         name: 'Orion NOVA L (LTE)',
         description: 'Флагман серії Orion NOVA (LTE) для охорони великих комерційних об\'єктів на 16 зон/датчиків з можливістю розширення до 250',
         badge: 'LTE',
-        image: 'assets/boards/nova-l-lte.webp'
+        image: 'assets/boards/nova-l-lte.png'
       },
       {
         id: 'nova-m-lte',
         name: 'Orion NOVA M (LTE)',
         description: 'Базова модель серії Orion NOVA LTE для охорони комерційних об\'єктів на 8 дротових зон/датчиків з можливістю розширення до 64',
         badge: 'LTE',
-        image: 'assets/boards/nova-m-lte.webp'
+        image: 'assets/boards/nova-m-lte.png'
       },
       {
         id: 'nova-s-lte',
         name: 'Orion NOVA S (LTE)',
         description: 'Компактна модель серії Orion NOVA LTE для охорони квартир, невеликих магазинів на 4 дротові зони/датчиків з можливістю розширення до 32',
         badge: 'LTE',
-        image: 'assets/boards/nova-s-lte.webp'
+        image: 'assets/boards/nova-s-lte.png'
       },
       {
         id: 'nova-l',
         name: 'Orion NOVA L',
         description: 'Флагман серії Orion NOVA для охорони великих комерційних об\'єктів на 16 зон/датчиків з можливістю розширення до 250',
         badge: null,
-        image: 'assets/boards/nova-l.webp'
+        image: 'assets/boards/nova-l.png'
       },
       {
         id: 'nova-m',
         name: 'Orion NOVA M',
         description: 'Базова модель серії Orion NOVA для охорони комерційних об\'єктів на 8 дротових зон/датчиків з можливістю розширення до 64',
         badge: null,
-        image: 'assets/boards/nova-m.webp'
+        image: 'assets/boards/nova-m.png'
       },
       {
         id: 'nova-s',
         name: 'Orion NOVA S',
         description: 'Компактна модель серії Orion NOVA для охорони квартир, невеликих магазинів на 4 дротові зони/датчиків з можливістю розширення до 32',
         badge: null,
-        image: 'assets/boards/nova-s.webp'
+        image: 'assets/boards/nova-s.png'
       },
       {
         id: 'nova-xs',
         name: 'Orion NOVA XS',
         description: 'Бюджетна модель серії Orion NOVA для охорони квартир на 4 дротові зони/датчиків з можливістю розширення до 32',
         badge: null,
-        image: 'assets/boards/nova-xs.webp'
+        image: 'assets/boards/nova-xs.png'
       }
     ]
   };

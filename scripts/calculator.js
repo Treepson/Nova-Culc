@@ -80,46 +80,58 @@
     // Додаємо модуль слот 1 (завжди є)
     if (hotspots.mod1) {
       boardWrap.innerHTML += `
-        <button class="hotspot hot-mod-1" data-type="modules" data-device="main" title="Слот №1" 
-                style="left:${hotspots.mod1.left};top:${hotspots.mod1.top};">+</button>
+        <div class="hotspot-wrap" style="left:${hotspots.mod1.left};top:${hotspots.mod1.top};">
+          <button class="hotspot hot-mod-1" data-type="modules" data-device="main">+</button>
+          <span class="hotspot-label">Слот №1</span>
+        </div>
       `;
     }
 
     // Додаємо модуль слот 2 (якщо є)
     if (DEVICE_CONFIG.hasModSlot2 && hotspots.mod2) {
       boardWrap.innerHTML += `
-        <button class="hotspot hot-mod-2" data-type="modules" data-device="main" title="Слот №2"
-                style="left:${hotspots.mod2.left};top:${hotspots.mod2.top};">+</button>
+        <div class="hotspot-wrap" style="left:${hotspots.mod2.left};top:${hotspots.mod2.top};">
+          <button class="hotspot hot-mod-2" data-type="modules" data-device="main">+</button>
+          <span class="hotspot-label">Слот №2</span>
+        </div>
       `;
     }
     // Додаємо M-Z слот (тільки для NOVA M)
     if (DEVICE_CONFIG.hasMzSlot && hotspots.mz) {
       boardWrap.innerHTML += `
-        <button class="hotspot hot-mz" data-type="main-mz" data-device="main" title="M-Z"
-                style="left:${hotspots.mz.left};top:${hotspots.mz.top};">+</button>
+        <div class="hotspot-wrap" style="left:${hotspots.mz.left};top:${hotspots.mz.top};">
+          <button class="hotspot hot-mz" data-type="main-mz" data-device="main">+</button>
+          <span class="hotspot-label">M-Z</span>
+        </div>
       `;
     }
     // Додаємо клавіатури
     if (hotspots.kb) {
       boardWrap.innerHTML += `
-        <button class="hotspot hot-kb" data-type="keyboards" data-device="main" title="RS-485"
-                style="left:${hotspots.kb.left};top:${hotspots.kb.top};">+</button>
+        <div class="hotspot-wrap" style="left:${hotspots.kb.left};top:${hotspots.kb.top};">
+          <button class="hotspot hot-kb" data-type="keyboards" data-device="main">+</button>
+          <span class="hotspot-label">RS-485</span>
+        </div>
       `;
     }
 
     // Додаємо датчики
     if (hotspots.sens) {
       boardWrap.innerHTML += `
-        <button class="hotspot hot-sens" data-type="sensors" data-device="main" title="Датчики"
-                style="left:${hotspots.sens.left};top:${hotspots.sens.top};">+</button>
+        <div class="hotspot-wrap" style="left:${hotspots.sens.left};top:${hotspots.sens.top};">
+          <button class="hotspot hot-sens" data-type="sensors" data-device="main">+</button>
+          <span class="hotspot-label">Датчики</span>
+        </div>
       `;
     }
 
     // Додаємо сирени
     if (hotspots.sir) {
       boardWrap.innerHTML += `
-        <button class="hotspot hot-sir" data-type="sirens" data-device="main" title="Сирени"
-                style="left:${hotspots.sir.left};top:${hotspots.sir.top};">+</button>
+        <div class="hotspot-wrap" style="left:${hotspots.sir.left};top:${hotspots.sir.top};">
+          <button class="hotspot hot-sir" data-type="sirens" data-device="main">+</button>
+          <span class="hotspot-label">Сирени</span>
+        </div>
       `;
     }
   }
@@ -1132,10 +1144,22 @@
     page.innerHTML = `
       <div class="ext-board-wrap">
         <img src="../${mod.img || "assets/modules/M-ZP box.webp"}" alt="${mod.name}" class="ext-board">
-        <button class="hotspot ext hot-ext-modx" data-type="modules" title="M-OUT2R" data-device="${safeId}" style="left:${hs.modx.left}%;top:${hs.modx.top}%;">+</button>
-        <button class="hotspot ext hot-ext-sens" data-type="sensors" title="Датчики" data-device="${safeId}" style="left:${hs.sens.left}%;top:${hs.sens.top}%;">+</button>
-        <button class="hotspot ext hot-ext-power" data-type="modules" title="RS-485"data-device="${safeId}" style="left:${hs.power.left}%;top:${hs.power.top}%;">+</button>
-        <button class="hotspot ext hot-ext-sir" data-type="sirens" title="Сирени" data-device="${safeId}" style="left:${hs.sir.left}%;top:${hs.sir.top}%;">+</button>
+        <div class="hotspot-wrap" style="left:${hs.modx.left}%;top:${hs.modx.top}%;">
+          <button class="hotspot ext hot-ext-modx" data-type="modules" data-device="${safeId}">+</button>
+          <span class="hotspot-label">M-OUT2R</span>
+        </div>
+        <div class="hotspot-wrap" style="left:${hs.sens.left}%;top:${hs.sens.top}%;">
+          <button class="hotspot ext hot-ext-sens" data-type="sensors" data-device="${safeId}">+</button>
+          <span class="hotspot-label">Датчики</span>
+        </div>
+        <div class="hotspot-wrap" style="left:${hs.power.left}%;top:${hs.power.top}%;">
+          <button class="hotspot ext hot-ext-power" data-type="modules" data-device="${safeId}">+</button>
+          <span class="hotspot-label">RS-485</span>
+        </div>
+        <div class="hotspot-wrap" style="left:${hs.sir.left}%;top:${hs.sir.top}%;">
+          <button class="hotspot ext hot-ext-sir" data-type="sirens" data-device="${safeId}">+</button>
+          <span class="hotspot-label">Сирени</span>
+        </div>
       </div>
 
       <!-- Mobile accordion for this extender (≤ 536px) -->
@@ -1194,15 +1218,21 @@
     if (hs.sens2) {
       const wrap = page.querySelector(".ext-board-wrap");
       if (wrap) {
+        const wrapDiv = document.createElement("div");
+        wrapDiv.className = "hotspot-wrap";
+        wrapDiv.style.left = hs.sens2.left + "%";
+        wrapDiv.style.top  = hs.sens2.top  + "%";
         const btn = document.createElement("button");
         btn.className = "hotspot ext hot-ext-sens2";
         btn.dataset.type = "ext-mz";
         btn.dataset.device = safeId;
-        btn.style.left = hs.sens2.left + "%";
-        btn.style.top  = hs.sens2.top  + "%";
         btn.textContent = "+";
-        btn.title = "M-Z";
-        wrap.appendChild(btn);
+        const lbl = document.createElement("span");
+        lbl.className = "hotspot-label";
+        lbl.textContent = "M-Z";
+        wrapDiv.appendChild(btn);
+        wrapDiv.appendChild(lbl);
+        wrap.appendChild(wrapDiv);
       }
     }
 
@@ -1342,6 +1372,7 @@
     attachEvents();
     updateMzHotspotState();
     attachPdfExport();
+    initProMode();
 
     // Mobile accordion
     buildMobileAccordion();
@@ -1939,6 +1970,27 @@
     if (exportBtn) {
       exportBtn.addEventListener('click', generatePDF);
     }
+  }
+
+  // ── PRO mode toggle ──────────────────────────────────
+  function initProMode() {
+    const toggle = document.getElementById("proModeToggle");
+    if (!toggle) return;
+
+    const isPro = localStorage.getItem("proMode") === "1";
+    applyProMode(isPro, toggle);
+
+    toggle.addEventListener("click", () => {
+      const nowPro = !document.body.classList.contains("pro-mode");
+      localStorage.setItem("proMode", nowPro ? "1" : "0");
+      applyProMode(nowPro, toggle);
+    });
+  }
+
+  function applyProMode(isPro, toggle) {
+    document.body.classList.toggle("pro-mode", isPro);
+    toggle.classList.toggle("active", isPro);
+    toggle.querySelector(".pro-label").textContent = isPro ? "PRO" : "PRO";
   }
 
 

@@ -81,11 +81,8 @@ body {
 @media (max-width:730px){
   .hotspot{width:24px;height:24px;font-size:14px;}
 }
-.hot-mod-1{ left:39.1%; top:11.9%; }
-.hot-mod-2{ left:49.4%; top:11.9%; }
-.hot-kb   { left:51.9%; top:32.2%; }
-.hot-sens { left:33.7%; top:32.2%; }
-.hot-sir  { left:67.1%; top:32.2%; }
+/* Positions handled via inline style on .hotspot-wrap */
+/* .hot-mod-1 .hot-mod-2 .hot-kb .hot-sens .hot-sir positions are in devices-config.json */
 
 .table-wrap{
   max-width:min(980px,96vw);
@@ -1006,4 +1003,92 @@ th{color:#c0c0c0;font-weight:500;}
 }
 .board {
   min-height: 200px;
+}
+
+/* ═══════════════════════════════════════════════
+   HOTSPOT WRAP + LABELS
+═══════════════════════════════════════════════ */
+.hotspot-wrap {
+  position: absolute;
+  width: 40px;
+  height: 52px;          /* 🔑 фіксована висота */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+.hotspot-wrap .hotspot {
+  position: static;   /* position now comes from parent wrap */
+  pointer-events: all;
+  transform: none;
+  flex-shrink: 0;
+}
+.hotspot-wrap .hotspot:hover {
+  transform: scale(1.08);
+}
+.hotspot-label {
+  margin-top: 3px;
+  font-size: 8px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.85);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  white-space: nowrap;
+  text-shadow: 0 0 8px rgba(0, 255, 102, 0.5);
+  pointer-events: none;
+  user-select: none;
+  transition: opacity 0.2s ease;
+}
+/* hide label when hotspot is occupied */
+.hotspot-wrap:has(.hotspot.occupied) .hotspot-label {
+  opacity: 0;
+}
+
+/* ── PRO mode: hide all labels ── */
+.pro-mode .hotspot-label {
+  display: none;
+}
+
+/* ═══════════════════════════════════════════════
+   PRO MODE TOGGLE
+═══════════════════════════════════════════════ */
+.pro-toggle {
+  position: fixed;
+  top: 14px;
+  right: 18px;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 11px 5px 8px;
+  border-radius: 20px;
+  border: 1px solid #2a2a2a;
+  background: #111;
+  color: #555;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-transform: uppercase;
+}
+.pro-toggle:hover {
+  border-color: #444;
+  color: #888;
+}
+.pro-toggle.active {
+  border-color: #30cd61;
+  color: #30cd61;
+  background: rgba(48, 205, 97, 0.08);
+  box-shadow: 0 0 10px rgba(48, 205, 97, 0.2);
+}
+.pro-icon {
+  font-size: 12px;
+  line-height: 1;
+}
+/* hide PRO toggle on mobile (accordion mode) */
+@media (max-width: 536px) {
+  .pro-toggle { display: none; }
 }
