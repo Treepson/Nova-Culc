@@ -521,8 +521,10 @@
       card.className="card";
 
       const img=document.createElement("img");
-      img.src = `../${it.img}` || "../assets/modules/placeholder.png";
+      img.src = `../${it.img}` || "../assets/modules/placeholder.webp";
       img.alt=it.name;
+      img.loading="lazy";
+      img.decoding="async";
 
       const lbl=document.createElement("div");
       lbl.className="card-label";
@@ -566,6 +568,8 @@
       const img=document.createElement("img");
       img.src=`../${info.img}`;
       img.alt=group;
+      img.loading="lazy";
+      img.decoding="async";
       const label=document.createElement("div");
       label.className="card-label";
       label.textContent=group;
@@ -626,8 +630,10 @@
       card.className="card";
 
       const img=document.createElement("img");
-      img.src = `../${m.img}` || "../assets/modules/placeholder.png";
+      img.src = `../${m.img}` || "../assets/modules/placeholder.webp";
       img.alt=m.name;
+      img.loading="lazy";
+      img.decoding="async";
 
       const label=document.createElement("div");
       label.className="card-label";
@@ -715,8 +721,10 @@
         card.className="card";
 
         const img=document.createElement("img");
-        img.src = `../${m.img}` || "../assets/modules/placeholder.png";
+        img.src = `../${m.img}` || "../assets/modules/placeholder.webp";
         img.alt=m.name;
+        img.loading="lazy";
+        img.decoding="async";
 
         const label=document.createElement("div");
         label.className="card-label";
@@ -784,10 +792,10 @@
       modalTitle.textContent = "Модулі";
 
       const list = [
-        { name: "M-Z box",   img: "assets/modules/M-Z box.png", normal: 60,  alarm: 60  },
-        { name: "M-OUT2R box",   img: "assets/modules/M-OUT2R box.png", normal: 40, alarm: 40 },
-        { name: "M-OUT8R",   img: "assets/modules/M-OUT8R.png", normal: 25,  alarm: 360 },
-        { name: "P-IND32",   img: "assets/modules/P-IND32.png", normal: 5,   alarm: 5 }
+        { name: "M-Z box",   img: "assets/modules/M-Z box.webp", normal: 60,  alarm: 60  },
+        { name: "M-OUT2R box",   img: "assets/modules/M-OUT2R box.webp", normal: 40, alarm: 40 },
+        { name: "M-OUT8R",   img: "assets/modules/M-OUT8R.webp", normal: 25,  alarm: 360 },
+        { name: "P-IND32",   img: "assets/modules/P-IND32.webp", normal: 5,   alarm: 5 }
       ];
 
       buildGenericList(list, "Модуль");
@@ -798,7 +806,7 @@
       modalTitle.textContent = "Модуль розширювача";
 
       const list = [
-        { name:"M-OUT2R", img:"assets/modules/M-OUT2R.png", normal:40, alarm:40 }
+        { name:"M-OUT2R", img:"assets/modules/M-OUT2R.webp", normal:40, alarm:40 }
       ];
 
       buildGenericList(list, "Модуль");
@@ -810,7 +818,7 @@
 
       const mzModule = {
         name: "M-Z",
-        img: "assets/modules/M-Z.png",
+        img: "assets/modules/M-Z.webp",
         normal: 60,
         alarm: 60
       };
@@ -824,7 +832,7 @@
 
       const list = [
         ...DATA.sensors,
-        { name: "Своє значення", img: "assets/tiras_logo_w.png", normal: 0, alarm: 0, custom: true }
+        { name: "Своє значення", img: "assets/tiras_logo_w.webp", normal: 0, alarm: 0, custom: true }
       ];
 
       buildGenericList(list,"Датчик");
@@ -836,7 +844,7 @@
 
       const list = [
         ...DATA.sirens,
-        { name: "Своє значення", img: "assets/tiras_logo_w.png", normal: 0, alarm: 0, custom: true }
+        { name: "Своє значення", img: "assets/tiras_logo_w.webp", normal: 0, alarm: 0, custom: true }
       ];
 
       buildGenericList(list,"Сирена");
@@ -849,7 +857,7 @@
 
     const mzModule = {
     name: "M-Z",
-    img: "assets/modules/M-Z.png",
+    img: "assets/modules/M-Z.webp",
     normal: 60,
     alarm: 60
   };
@@ -1123,7 +1131,7 @@
 
     page.innerHTML = `
       <div class="ext-board-wrap">
-        <img src="../${mod.img || "assets/modules/M-ZP box.png"}" alt="${mod.name}" class="ext-board">
+        <img src="../${mod.img || "assets/modules/M-ZP box.webp"}" alt="${mod.name}" class="ext-board">
         <button class="hotspot ext hot-ext-modx" data-type="modules" title="M-OUT2R" data-device="${safeId}" style="left:${hs.modx.left}%;top:${hs.modx.top}%;">+</button>
         <button class="hotspot ext hot-ext-sens" data-type="sensors" title="Датчики" data-device="${safeId}" style="left:${hs.sens.left}%;top:${hs.sens.top}%;">+</button>
         <button class="hotspot ext hot-ext-power" data-type="modules" title="RS-485"data-device="${safeId}" style="left:${hs.power.left}%;top:${hs.power.top}%;">+</button>
@@ -2006,10 +2014,10 @@
     else if (sec.type === "main-mz")  renderAccMz(body);
     else if (sec.type === "keyboards") renderAccKeyboards(body);
     else if (sec.type === "sensors")  renderAccGenericList(body,
-      [...DATA.sensors, { name: "Своє значення", img: "assets/tiras_logo_w.png", normal: 0, alarm: 0, custom: true }],
+      [...DATA.sensors, { name: "Своє значення", img: "assets/tiras_logo_w.webp", normal: 0, alarm: 0, custom: true }],
       "Датчик");
     else if (sec.type === "sirens")   renderAccGenericList(body,
-      [...DATA.sirens,  { name: "Своє значення", img: "assets/tiras_logo_w.png", normal: 0, alarm: 0, custom: true }],
+      [...DATA.sirens,  { name: "Своє значення", img: "assets/tiras_logo_w.webp", normal: 0, alarm: 0, custom: true }],
       "Сирена");
   }
 
@@ -2060,7 +2068,7 @@
 
   function renderAccMz(body) {
     body.innerHTML = "";
-    const mzMod = { name: "M-Z", img: "assets/modules/M-Z.png", normal: 60, alarm: 60 };
+    const mzMod = { name: "M-Z", img: "assets/modules/M-Z.webp", normal: 60, alarm: 60 };
     const grid = document.createElement("div");
     grid.className = "acc-card-grid";
 
@@ -2213,6 +2221,8 @@
     const img = document.createElement("img");
     img.src = imgSrc;
     img.alt = name;
+    img.loading = "lazy";
+    img.decoding = "async";
     const label = document.createElement("div");
     label.className = "card-label";
     label.textContent = name;
@@ -2349,31 +2359,31 @@
     if (sec.type === "sensors") {
       const list = [
         ...DATA.sensors,
-        { name: "Своє значення", img: "assets/tiras_logo_w.png", normal: 0, alarm: 0, custom: true }
+        { name: "Своє значення", img: "assets/tiras_logo_w.webp", normal: 0, alarm: 0, custom: true }
       ];
       renderExtAccGenericList(body, list, "Датчик", safeId);
 
     } else if (sec.type === "ext-mz") {
-      const mzMod = { name: "M-Z", img: "assets/modules/M-Z.png", normal: 60, alarm: 60 };
+      const mzMod = { name: "M-Z", img: "assets/modules/M-Z.webp", normal: 60, alarm: 60 };
       renderExtAccGenericList(body, [mzMod], "Модуль зон", safeId, true /* toggle */);
 
     } else if (sec.type === "ext-modx") {
-      const modx = [{ name: "M-OUT2R", img: "assets/modules/M-OUT2R.png", normal: 40, alarm: 40 }];
+      const modx = [{ name: "M-OUT2R", img: "assets/modules/M-OUT2R.webp", normal: 40, alarm: 40 }];
       renderExtAccGenericList(body, modx, "Модуль", safeId, true /* toggle */);
 
     } else if (sec.type === "ext-power") {
       const powerList = [
-        { name: "M-Z box",      img: "assets/modules/M-Z box.png",     normal: 60,  alarm: 60  },
-        { name: "M-OUT2R box",  img: "assets/modules/M-OUT2R box.png", normal: 40,  alarm: 40  },
-        { name: "M-OUT8R",      img: "assets/modules/M-OUT8R.png",     normal: 25,  alarm: 360 },
-        { name: "P-IND32",      img: "assets/modules/P-IND32.png",     normal: 5,   alarm: 5   }
+        { name: "M-Z box",      img: "assets/modules/M-Z box.webp",     normal: 60,  alarm: 60  },
+        { name: "M-OUT2R box",  img: "assets/modules/M-OUT2R box.webp", normal: 40,  alarm: 40  },
+        { name: "M-OUT8R",      img: "assets/modules/M-OUT8R.webp",     normal: 25,  alarm: 360 },
+        { name: "P-IND32",      img: "assets/modules/P-IND32.webp",     normal: 5,   alarm: 5   }
       ];
       renderExtAccGenericList(body, powerList, "Модуль", safeId);
 
     } else if (sec.type === "sirens") {
       const list = [
         ...DATA.sirens,
-        { name: "Своє значення", img: "assets/tiras_logo_w.png", normal: 0, alarm: 0, custom: true }
+        { name: "Своє значення", img: "assets/tiras_logo_w.webp", normal: 0, alarm: 0, custom: true }
       ];
       renderExtAccGenericList(body, list, "Сирена", safeId);
     }

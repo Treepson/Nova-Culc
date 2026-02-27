@@ -5,7 +5,7 @@
       "name": "Orion NOVA L (LTE)",
       "title": "Калькулятор ємності АКБ • Orion NOVA L (LTE)",
       "backLink": "https://tiras.technology/devices/orion-nova-l-lte/",
-      "boardImage": "assets/boards/nova-l-lte.png",
+      "boardImage": "assets/boards/nova-l-lte.webp",
       "hotspots": {
         "mod1": { "left": "31.7%", "top": "14.9%" },
         "mod2": { "left": "41.2%", "top": "14.9%" },
@@ -28,7 +28,7 @@
       "name": "Orion NOVA M (LTE)",
       "title": "Калькулятор ємності АКБ • Orion NOVA M (LTE)",
       "backLink": "https://tiras.technology/devices/orion-nova-m-lte/",
-      "boardImage": "assets/boards/nova-m-lte.png",
+      "boardImage": "assets/boards/nova-m-lte.webp",
       "hotspots": {
         "mod1": { "left": "35.3%", "top": "14.9%" },
         "mod2": { "left": "44.7%", "top": "14.9%" },
@@ -51,7 +51,7 @@
       "name": "Orion NOVA S (LTE)",
       "title": "Калькулятор ємності АКБ • Orion NOVA S (LTE)",
       "backLink": "https://tiras.technology/devices/orion-nova-s-lte/",
-      "boardImage": "assets/boards/nova-s-lte.png",
+      "boardImage": "assets/boards/nova-s-lte.webp",
       "hotspots": {
         "mod1": { "left": "47.7%", "top": "9.9%" },
         "mod2": { "left": "65.5%", "top": "9.9%" },
@@ -74,7 +74,7 @@
       "name": "Orion NOVA L",
       "title": "Калькулятор ємності АКБ • Orion NOVA L",
       "backLink": "https://tiras.technology/devices/orion-nova-l/",
-      "boardImage": "assets/boards/nova-l.png",
+      "boardImage": "assets/boards/nova-l.webp",
       "hotspots": {
         "mod1": { "left": "39.1%", "top": "11.9%" },
         "mod2": { "left": "49.4%", "top": "11.9%" },
@@ -97,7 +97,7 @@
       "name": "Orion NOVA M",
       "title": "Калькулятор ємності АКБ • Orion NOVA M",
       "backLink": "https://tiras.technology/devices/orion-nova-m/",
-      "boardImage": "assets/boards/nova-m.png",
+      "boardImage": "assets/boards/nova-m.webp",
       "hotspots": {
         "mod1": { "left": "39.1%", "top": "11.9%" },
         "mod2": { "left": "49.4%", "top": "11.9%" },
@@ -121,7 +121,7 @@
       "name": "Orion NOVA S",
       "title": "Калькулятор ємності АКБ • Orion NOVA S",
       "backLink": "https://tiras.technology/devices/orion-nova-s/",
-      "boardImage": "assets/boards/nova-s.png",
+      "boardImage": "assets/boards/nova-s.webp",
       "hotspots": {
         "mod1": { "left": "49.7%", "top": "12.9%" },
         "mod2": { "left": "65.5%", "top": "12.9%" },
@@ -144,7 +144,7 @@
       "name": "Orion NOVA XS",
       "title": "Калькулятор ємності АКБ • Orion NOVA XS",
       "backLink": "https://tiras.technology/devices/orion-nova-xs/",
-      "boardImage": "assets/boards/nova-xs.png",
+      "boardImage": "assets/boards/nova-xs.webp",
       "hotspots": {
         "mod1": { "left": "65.5%", "top": "12.9%" },
         "kb": { "left": "66.2%", "top": "41.3%" },

@@ -2,44 +2,44 @@
   "modulesInner": [
     {
       "name": "M-OUT2R",
-      "img": "assets/modules/M-OUT2R.png",
+      "img": "assets/modules/M-OUT2R.webp",
       "normal": 40,
       "alarm": 40
     },
     {
       "name": "M-X",
-      "img": "assets/modules/M-X.png",
+      "img": "assets/modules/M-X.webp",
       "normal": 25,
       "alarm": 25
     },
     {
       "name": "M-WiFi",
-      "img": "assets/modules/M-WiFi.png",
+      "img": "assets/modules/M-WiFi.webp",
       "normal": 50,
       "alarm": 50
     },
     {
       "name": "M-NET+",
-      "img": "assets/modules/M-NET+.png",
+      "img": "assets/modules/M-NET+.webp",
       "normal": 80,
       "alarm": 80
     },
     {
       "name": "M-Z+",
-      "img": "assets/modules/M-Z+.png",
+      "img": "assets/modules/M-Z+.webp",
       "normal": 20,
       "alarm": 20
     }
   ],
   "mzModule": {
     "name": "M-Z",
-    "img": "assets/modules/M-Z.png",
+    "img": "assets/modules/M-Z.webp",
     "normal": 60,
     "alarm": 60
   },
   "keyboardGroups": {
     "K-LED": {
-      "img": "assets/kb/K-LED.png",
+      "img": "assets/kb/K-LED.webp",
       "models": [
         {
           "name": "K-LED4",
@@ -59,7 +59,7 @@
       ]
     },
     "K-PAD": {
-      "img": "assets/kb/K-Pad.png",
+      "img": "assets/kb/K-Pad.webp",
       "models": [
         {
           "name": "K-PAD4",
@@ -104,7 +104,7 @@
       ]
     },
     "K-GLCD": {
-      "img": "assets/kb/K-GLCD.png",
+      "img": "assets/kb/K-GLCD.webp",
       "models": [
         {
           "name": "K-GLCD",
@@ -133,25 +133,25 @@
     "Розширювачі зон": [
       {
         "name": "M-Z box",
-        "img": "assets/modules/M-Z box.png",
+        "img": "assets/modules/M-Z box.webp",
         "normal": 60,
         "alarm": 60
       },
       {
         "name": "M-ZP box",
-        "img": "assets/modules/M-ZPBox.png",
+        "img": "assets/modules/M-ZPBox.webp",
         "normal": 200,
         "alarm": 200
       },
       {
         "name": "M-ZP sBox",
-        "img": "assets/modules/M-ZP sBox.png",
+        "img": "assets/modules/M-ZP sBox.webp",
         "normal": 150,
         "alarm": 150
       },
       {
         "name": "M-ZP mBox",
-        "img": "assets/modules/M-ZP mBox.png",
+        "img": "assets/modules/M-ZP mBox.webp",
         "normal": 200,
         "alarm": 200
       }
@@ -159,13 +159,13 @@
     "Розширювачі виходів": [
       {
         "name": "M-OUT2R box",
-        "img": "assets/modules/M-OUT2R box.png",
+        "img": "assets/modules/M-OUT2R box.webp",
         "normal": 40,
         "alarm": 40
       },
       {
         "name": "M-OUT8R",
-        "img": "assets/modules/M-OUT8R.png",
+        "img": "assets/modules/M-OUT8R.webp",
         "normal": 25,
         "alarm": 360
       }
@@ -173,7 +173,7 @@
     "Панелі індикації": [
       {
         "name": "P-IND32",
-        "img": "assets/modules/P-IND32.png",
+        "img": "assets/modules/P-IND32.webp",
         "normal": 80,
         "alarm": 80
       }
@@ -182,49 +182,49 @@
   "sensors": [
     {
       "name": "Swan Quad",
-      "img": "assets/sensors/swanquad.png",
+      "img": "assets/sensors/swanquad.webp",
       "normal": 8,
       "alarm": 10
     },
     {
       "name": "Swan PGB",
-      "img": "assets/sensors/swanpgb.png",
+      "img": "assets/sensors/swanpgb.webp",
       "normal": 16,
       "alarm": 22
     },
     {
       "name": "GBD II",
-      "img": "assets/sensors/gbd 2.png",
+      "img": "assets/sensors/gbd 2.webp",
       "normal": 22,
       "alarm": 26
     },
     {
       "name": "SRPG II",
-      "img": "assets/sensors/srpg 2.png",
+      "img": "assets/sensors/srpg 2.webp",
       "normal": 16,
       "alarm": 22
     },
     {
       "name": "SRP 600",
-      "img": "assets/sensors/srp600.png",
+      "img": "assets/sensors/srp600.webp",
       "normal": 8,
       "alarm": 8
     },
     {
       "name": "GSN Patrol 803",
-      "img": "assets/sensors/patrol 803.png",
+      "img": "assets/sensors/patrol 803.webp",
       "normal": 17,
       "alarm": 19
     },
     {
       "name": "LC-100",
-      "img": "assets/sensors/LC 100.png",
+      "img": "assets/sensors/LC 100.webp",
       "normal": 8,
       "alarm": 10
     },
     {
       "name": "LC-102",
-      "img": "assets/sensors/LC 102.png",
+      "img": "assets/sensors/LC 102.webp",
       "normal": 16,
       "alarm": 18
     },
@@ -242,7 +242,7 @@
     },
     {
       "name": "Detecto MLT10",
-      "img": "assets/sensors/MLT 10.png",
+      "img": "assets/sensors/MLT 10.webp",
       "normal": 0.12,
       "alarm": 16
     }
@@ -250,19 +250,19 @@
   "sirens": [
     {
       "name": "Джміль",
-      "img": "assets/sirens/dzhmil.png",
+      "img": "assets/sirens/dzhmil.webp",
       "normal": 0,
       "alarm": 100
     },
     {
       "name": "Джміль-1",
-      "img": "assets/sirens/dzhmil-1.png",
+      "img": "assets/sirens/dzhmil-1.webp",
       "normal": 0,
       "alarm": 100
     },
     {
       "name": "Джміль-2",
-      "img": "assets/sirens/dzhmil-1.png",
+      "img": "assets/sirens/dzhmil-1.webp",
       "normal": 0,
       "alarm": 300
     }

@@ -988,3 +988,22 @@ th{color:#c0c0c0;font-weight:500;}
   .ext-table  tbody td:nth-child(2) { font-size: 12px; }
 }
 
+
+/* ---- Board skeleton loader ---- */
+.board-wrap.loading::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, #0d0d0d 25%, #1a1a1a 50%, #0d0d0d 75%);
+  background-size: 200% 100%;
+  animation: board-shimmer 1.4s infinite;
+  border-radius: 12px;
+  z-index: 1;
+}
+@keyframes board-shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+.board {
+  min-height: 200px;
+}
